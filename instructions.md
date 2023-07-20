@@ -3,3 +3,4 @@
 # Pages
 Homepage
 GamePage
+ScorePage
