@@ -1,7 +1,7 @@
 # Game Details - icytower clone
 
 # Pages
-Homepage === loge-in
+Homepage === loge-in -shiran
 GamePage
 ScorePage === finish
 
