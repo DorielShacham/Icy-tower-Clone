@@ -7,16 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage-PlanePlane</title>
     <script src="../typescript/dist/game.js" defer></script>
+    <script src="../typescript/dist/index.js" defer></script>
+    <link rel="stylesheet" href="../scss/dist/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lumanosimo&display=swap" rel="stylesheet"> 
 </head>
 
 <body>
-    <span id="pointer"></span>
 
-    <main>
-        <h1>Welcome to PlanePlane</h1>
-        <p>You must reach your destination without hiting the walls! <br /> <br /> move with keyboard A W S D
-        <a class="play" href="./canvas.html?PlanePlane">Play</a>
-    </main>
+    <div class="main">
+        <form id="LogInForm" onsubmit="hendleLogIn(event)">
+            <h1>Jesus flies</h1>
+            <input type="text" name="username" placeholder="Eter User Name" required>
+            <input type="submit" value="Play">
+              
+        </form>
+        <button id="scoreboardBtn" onclick="showScoreboard()"></button>
+    </div>
+    <div id="cursorShadow"></div>
 </body>
 
 </html>
