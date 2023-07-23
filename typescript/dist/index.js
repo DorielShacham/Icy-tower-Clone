@@ -1,4 +1,5 @@
 // Object: index.ts file
+//-----hendels----------------------------
 function hendleLogIn(ev) {
     try {
         ev.preventDefault();
@@ -17,9 +18,11 @@ function hendleLogIn(ev) {
         console.error(error);
     }
 }
+//move to scoreboard.html  --> need to be at the controlers files (canvas.ts)
 function showScoreboard() {
     window.location.href = 'scoreboard.html';
 }
+//mouse shadow at login page
 var cursorShadow = document.getElementById("cursorShadow");
 // Update the cursor shadow position on mousemove
 document.addEventListener("mousemove", function (event) {

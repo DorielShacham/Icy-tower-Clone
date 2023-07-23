@@ -1,6 +1,9 @@
 //---------------------------------------------------------------------
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+var users = [];
+var bomb = new Bomb();
+var coin = new Coin();
 var player = new Player();
 var floors = [];
 var lastFloorId = 0;
@@ -148,6 +151,8 @@ function draw() {
     ctx.translate(0, canvasOffsetY); // Apply the vertical offset to the canvas
     // Draw player and floors
     player.draw(ctx);
+    bomb.drawBomb(ctx);
+    coin.drawCoin(ctx);
     for (var _i = 0, floors_2 = floors; _i < floors_2.length; _i++) {
         var floor = floors_2[_i];
         floor.draw(ctx);
@@ -160,3 +165,27 @@ function draw() {
 generateFloor();
 updateInterval = setInterval(update, 800 / 60);
 draw();
+//------------render score---------
+function renderScore() {
+    var html = document.querySelector('#score');
+    var users = localStorage.getItem('users');
+    try {
+        if (!html)
+            throw new Error("no element");
+        html.innerHTML = "<h2>" + user.userName + " your current score is: " + users.score + "</h2>";
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+function renderTableScore() {
+    try {
+        var scoreTable = document.querySelector('#scoreTable');
+        if (!scoreTable)
+            throw new Error("no element");
+        var htmlScoreTable = "<h2> </h2>";
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
