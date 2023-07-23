@@ -49,7 +49,7 @@ function showGameOverPopup() {
   const restartButton = document.createElement("button");
   restartButton.textContent = "Restart";
   restartButton.addEventListener("click", () => {
-    location.reload(); // Reload the page to restart the game
+    location.reload();
   });
   popup.innerHTML = "You touched the floor! Game Over!";
   popup.appendChild(restartButton);
@@ -143,6 +143,9 @@ function update() {
     removeFloors();
 
     if (floors.length === 0 || floors[floors.length - 1].y > 100) {
+      generateFloor();
+    } else if (player.y + player.height < canvas.height / 2) {
+      // If the player is moving up and reaches a certain point, generate new floors
       generateFloor();
     }
 

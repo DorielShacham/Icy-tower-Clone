@@ -35,6 +35,10 @@ class Player {
 
 class Floor {
   id: number; // Add an ID property to the Floor class
+  width: number;
+  height: number;
+  x: number;
+  y: number;
 
   constructor(x: number, y: number, width: number, id: number) {
     this.x = x;
