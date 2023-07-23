@@ -4,8 +4,21 @@ const ctx = canvas.getContext("2d")!;
 
 const player = new Player();
 let floors: Floor[] = [];
-
 let lastFloorId = 0;
+
+// Vertical offset for the canvas
+let canvasOffsetY = 0;
+let hasStartedMovingUp = false;
+let hasStartedMovingDown = false;
+
+// Function to move the canvas up
+function moveCanvasUp() {
+  if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
+    // Start moving the canvas up only when the player's y position is less than half of the canvas height
+    canvasOffsetY += 1;
+  }
+}
+
 //generate the floors
 function generateFloor() {
   const minGap = 100;
@@ -14,20 +27,18 @@ function generateFloor() {
   const maxWidth = 200;
 
   const lastFloor = floors[floors.length - 1];
-  const y = lastFloor ? lastFloor.y - 100 : canvas.height - 20; // Ensure the first floor starts at the bottom of the canvas
+  const y = lastFloor ? lastFloor.y - 100 : canvas.height - 20 - canvasOffsetY; // Apply the vertical offset to the first floor
 
   const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
-  const width = floors.length === 0 ? canvas.width : // Set width to canvas width for bottom floor
-    Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
-  const x = floors.length === 0 ? 0 : // Set x to 0 for bottom floor
-    Math.floor(Math.random() * (canvas.width - width)); // Ensure the floor is within the canvas width
+  const width = floors.length === 0 ? canvas.width : Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
+  const x = floors.length === 0 ? 0 : Math.floor(Math.random() * (canvas.width - width));
 
-  floors.push(new Floor(x, y, width, lastFloorId)); // Assign the ID to the floor
-  lastFloorId++; // Increment the ID for the next floor
+  floors.push(new Floor(x, y, width, lastFloorId));
+  lastFloorId++;
 }
 
 function removeFloors() {
-  floors = floors.filter((floor) => floor.y + floor.height > 0);
+  floors = floors.filter((floor) => floor.y + floor.height > -canvasOffsetY); // Remove floors above the canvas
 }
 //--
 
@@ -76,8 +87,10 @@ document.addEventListener("keyup", onKeyUp);
 document.addEventListener("keypress", onKeyPress);
 //---------------------------------------------------------------------
 //update frames
+let updateInterval: number; 
 function update() {
   if (!gameOver) {
+    moveCanvasUp();
     if (isLeftKeyPressed) {
       player.x -= 5;
     } else if (isRightKeyPressed) {
@@ -136,6 +149,7 @@ function update() {
     if (player.y >= canvas.height) {
       gameOver = true;
       showGameOverPopup();
+      clearInterval(updateInterval); // Stop the update loop when the game is over
     }
   }
 }
@@ -143,14 +157,21 @@ function update() {
 //draw frames
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.translate(0, canvasOffsetY); // Apply the vertical offset to the canvas
+
+  // Draw player and floors
   player.draw(ctx);
   for (const floor of floors) {
     floor.draw(ctx);
   }
+
+  // Reset the canvas transformation
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
   requestAnimationFrame(draw);
 }
 //--
 
 generateFloor();
-setInterval(update, 800 / 60);
-draw();
+updateInterval = setInterval(update, 800 / 60);
+draw()
