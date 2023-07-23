@@ -11,9 +11,9 @@ ScorePage === finish
 
 # controlers
 - update score
-- fall down (end game)
+- fall down (end game) - @added completed
 - hit obstical (loss/collect point)
-- move (up, left, right)
+- move (up, left, right) - @fixed and completed
 - movment of the background -> as the figur move up in the screen the backgrund move down
 - data-from-storage -> function that get the data we put in local storage to the page we load
 - on-load -> will help us start the loading page only with what we need

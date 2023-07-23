@@ -7,8 +7,8 @@ class Player {
   isJumping: boolean;
 
   constructor() {
-    this.x = 200;
-    this.y = 350;
+    this.x = 600;
+    this.y = canvas.height - 30;
     this.width = 30;
     this.height = 30;
     this.velocityY = 0;
@@ -17,7 +17,7 @@ class Player {
 
   jump() {
     if (!this.isJumping) {
-      this.velocityY = -10;
+      this.velocityY = -15;
       this.isJumping = true;
     }
   }
@@ -25,11 +25,6 @@ class Player {
   update() {
     this.y += this.velocityY;
     this.velocityY += 0.5;
-
-    if (this.y > 350) {
-      this.y = 350;
-      this.isJumping = false;
-    }
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -52,7 +47,7 @@ class Floor {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = "green";
+    ctx.fillStyle = "gray";
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 }
