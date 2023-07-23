@@ -8,7 +8,7 @@ class Player {
 
   constructor() {
     this.x = 600;
-    this.y = canvas.height - 30;
+    this.y = canvas.height - 50; // Set the initial y position above the first floor
     this.width = 30;
     this.height = 30;
     this.velocityY = 0;
@@ -34,16 +34,14 @@ class Player {
 }
 
 class Floor {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  id: number; // Add an ID property to the Floor class
 
-  constructor(x: number, y: number, width: number) {
+  constructor(x: number, y: number, width: number, id: number) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = 20;
+    this.id = id; // Assign the ID to the floor
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -51,6 +49,3 @@ class Floor {
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 }
-
-
-
