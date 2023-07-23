@@ -2,6 +2,10 @@
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 
+const users: User[] = []
+const bomb = new Bomb();
+const coin = new Coin();
+
 const player = new Player();
 let floors: Floor[] = [];
 let lastFloorId = 0;
@@ -164,6 +168,8 @@ function draw() {
 
   // Draw player and floors
   player.draw(ctx);
+  bomb.drawBomb(ctx);
+  coin.drawCoin(ctx);
   for (const floor of floors) {
     floor.draw(ctx);
   }
@@ -178,3 +184,28 @@ function draw() {
 generateFloor();
 updateInterval = setInterval(update, 800 / 60);
 draw()
+
+//------------render score---------
+
+function renderScore() {
+  const html = document.querySelector('#score');
+  const users = localStorage.getItem('users')
+  try {
+    if (!html) throw new Error("no element");
+    html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+function renderTableScore() {
+  try {
+    const scoreTable = document.querySelector('#scoreTable')
+    if (!scoreTable) throw new Error("no element");
+
+    const htmlScoreTable = `<h2> </h2>`
+  } catch (error) {
+    console.error(error)
+  }
+
+}
