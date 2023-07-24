@@ -1,3 +1,7 @@
+  
+  body{
+    margin: auto;
+  }
   #canvas {
     position: absolute;
     top: 0;
@@ -5,6 +9,7 @@
     width: 800px;
     height: 800px;
     border: 10px solid red;
+    margin: auto;
   }
 
   .restart-button {
