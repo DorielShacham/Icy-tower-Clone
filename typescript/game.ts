@@ -42,16 +42,20 @@ class Player {
     this.y += this.velocityY;
     this.velocityY += 0.5;
 
+// Apply rotation only when the player is jumping or falling
+ // Apply rotation only when the player is jumping
+ if (this.isJumping) {
+  // Increase the rotation angle while jumping
+  this.rotation += 5; // Adjust the value as needed for the rotation speed
+  if (this.rotation >= 360) {
+    // Wrap the rotation angle around 360 degrees
+    this.rotation = 0;
+  }
+} else {
+  // If the player is not jumping, set the rotation angle to 0
+  this.rotation = 0;
+}
 
-     // Apply rotation when the player is jumping
-    if (this.isJumping) {
-      // Increase the rotation angle while jumping
-      this.rotation += 5; // Adjust the value as needed for the rotation speed
-      if (this.rotation >= 360) {
-        // Wrap the rotation angle around 360 degrees
-        this.rotation = 0;
-      }
-    }
   }
 
   draw(ctx: CanvasRenderingContext2D) {
