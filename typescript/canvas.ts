@@ -52,7 +52,7 @@ function removeFloors() {
 }
 //-----------------------bomb function----------------------------
 
-//generate the bomb
+//generate the bombs
 function generateBomb() {
   // const minGap = 50;
   // const maxGap = 100;
@@ -77,6 +77,35 @@ function generateBomb() {
 
 function removeBombs() {
   bombs = bombs.filter((bomb) => bomb.y + bomb.height > -canvasOffsetY); // Remove bombs above the canvas
+}
+
+//---------------coin function---------
+
+//generate the coins
+function generateCoin() {
+  // const minGap = 50;
+  // const maxGap = 100;
+  const minWidth = 150;
+  const maxWidth = 100;
+
+  const lastCoin = coins[coins.length - 1];
+  const y = lastCoin ? lastCoin.y - 100 : canvas.height - 20 - canvasOffsetY; // Apply the vertical offset to the first bomb
+
+  // const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
+
+  const width = coins.length === 0 ? canvas.width : Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
+  const x = coins.length === 0 ? 0 : Math.floor(Math.random() * (canvas.width - width));
+
+  console.log(`x=`, x)
+  console.log(`width=`, width)
+
+  coins.push(new Coin(x, y, width, lastCoinId));
+  console.log(`coins array=`, coins)
+  lastBombId++;
+}
+
+function removeCoins() {
+  coins = coins.filter((coin) => coin.y + bomb.height > -canvasOffsetY); // Remove coins above the canvas
 }
 
 //------- gameover popup----------------------------
@@ -179,7 +208,6 @@ function update() {
 
     removeFloors();
 
-
     if (floors.length === 0 || floors[floors.length - 1].y > 100) {
       generateFloor();
     } else if (player.y + player.height < canvas.height / 2) {
@@ -193,8 +221,6 @@ function update() {
       // If the player is moving up and reaches a certain point, generate new bombs
       generateBomb();
     }
-
-    generateBomb();
 
     removeBombs();
 
@@ -211,14 +237,21 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.translate(0, canvasOffsetY); // Apply the vertical offset to the canvas
 
-  // Draw player and floors
+  // Draw player & floors & bomb & coins
   player.draw(ctx);
   bomb.drawBomb(ctx);
   coin.drawCoin(ctx);
+
   for (const floor of floors) {
     floor.draw(ctx);
+  }
+
+  for (const bomb of bombs) {
     bomb.drawBomb(ctx);
-  coin.drawCoin(ctx);
+  }
+
+  for (const coin of coins) {
+    coin.drawCoin(ctx);
   }
 
   // Reset the canvas transformation
@@ -229,6 +262,8 @@ function draw() {
 //--
 
 generateFloor();
+generateBomb();
+generateCoin();
 updateInterval = setInterval(update, 800 / 60);
 draw()
 

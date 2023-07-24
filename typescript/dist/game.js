@@ -50,8 +50,8 @@ var Floor = /** @class */ (function () {
 }());
 var Bomb = /** @class */ (function () {
     function Bomb(x, y, width, idB) {
-        this.x = Math.floor(Math.random() * 500); //random position on x
-        this.y = Math.floor(Math.random() * 500); //random position on y
+        this.x = Math.floor(Math.random() * 1000); //random position on x
+        this.y = Math.floor(Math.random() * 1000); //random position on y
         this.width = 30;
         this.height = 30;
         this.idB = idB; // Assign the ID to the bomb
@@ -60,6 +60,7 @@ var Bomb = /** @class */ (function () {
         ctx.beginPath();
         ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
         ctx.stroke();
+        ctx.strokeStyle = "red";
         ctx.fillStyle = "black";
     };
     return Bomb;
@@ -76,7 +77,7 @@ var Coin = /** @class */ (function () {
         ctx.beginPath();
         ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
         ctx.stroke();
-        ctx.fillStyle = "gold";
+        ctx.strokeStyle = "gold";
     };
     return Coin;
 }());

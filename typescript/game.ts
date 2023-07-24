@@ -70,8 +70,8 @@ class Bomb {
   height: number;
 
   constructor(x:number, y:number, width:number, idB: number) {
-    this.x = Math.floor(Math.random()*500); //random position on x
-    this.y = Math.floor(Math.random()*500); //random position on y
+    this.x = Math.floor(Math.random()*1000); //random position on x
+    this.y = Math.floor(Math.random()*1000); //random position on y
     this.width = 30;
     this.height = 30;
     this.idB = idB; // Assign the ID to the bomb
@@ -81,6 +81,7 @@ class Bomb {
       ctx.beginPath();
       ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
       ctx.stroke();
+      ctx.strokeStyle = "red";
       ctx.fillStyle = "black";
     }
 }
@@ -104,7 +105,7 @@ class Coin {
       ctx.beginPath();
       ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
       ctx.stroke();
-      ctx.fillStyle = "gold";
+      ctx.strokeStyle = "gold";
     }
 }
 

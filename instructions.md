@@ -1,3 +1,4 @@
+Goal: 
 # Game Details - icytower clone
 
 # Pages
