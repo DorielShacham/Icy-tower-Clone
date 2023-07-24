@@ -63,16 +63,18 @@ class Floor {
 }
 
 class Bomb {
+  idB: number; // Add an ID property to the Bomb class
   x: number;
   y: number;
   width: number;
   height: number;
 
-  constructor() {
+  constructor(x:number, y:number, width:number, idB: number) {
     this.x = Math.floor(Math.random()*500); //random position on x
     this.y = Math.floor(Math.random()*500); //random position on y
     this.width = 30;
-    this.height = 30;      
+    this.height = 30;
+    this.idB = idB; // Assign the ID to the bomb
   }
 
   drawBomb(ctx: CanvasRenderingContext2D) {
@@ -84,16 +86,18 @@ class Bomb {
 }
 
 class Coin {
+  idC: number; // Add an ID property to the Coin class
   x: number;
   y: number;
   width: number;
   height: number;
 
-  constructor() {
+  constructor(x:number, y:number, width:number, idC:number) {
     this.x = Math.floor(Math.random()*500);
     this.y = Math.floor(Math.random()*500);
     this.width = 30;
-    this.height = 30;      
+    this.height = 30;
+    this.idC = idC;   // Assign the ID to the coin   
   }
 
   drawCoin(ctx: CanvasRenderingContext2D) {
@@ -104,8 +108,7 @@ class Coin {
     }
 }
 
-
-
+//-------------------------------------------------------
 function updateScore() {
   try {
     if ((this.player.x === bomb.x) && (this.player.y === bomb.y)) {

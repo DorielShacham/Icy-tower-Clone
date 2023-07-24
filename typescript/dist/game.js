@@ -49,11 +49,12 @@ var Floor = /** @class */ (function () {
     return Floor;
 }());
 var Bomb = /** @class */ (function () {
-    function Bomb() {
+    function Bomb(x, y, width, idB) {
         this.x = Math.floor(Math.random() * 500); //random position on x
         this.y = Math.floor(Math.random() * 500); //random position on y
         this.width = 30;
         this.height = 30;
+        this.idB = idB; // Assign the ID to the bomb
     }
     Bomb.prototype.drawBomb = function (ctx) {
         ctx.beginPath();
@@ -64,11 +65,12 @@ var Bomb = /** @class */ (function () {
     return Bomb;
 }());
 var Coin = /** @class */ (function () {
-    function Coin() {
+    function Coin(x, y, width, idC) {
         this.x = Math.floor(Math.random() * 500);
         this.y = Math.floor(Math.random() * 500);
         this.width = 30;
         this.height = 30;
+        this.idC = idC; // Assign the ID to the coin   
     }
     Coin.prototype.drawCoin = function (ctx) {
         ctx.beginPath();
@@ -78,6 +80,7 @@ var Coin = /** @class */ (function () {
     };
     return Coin;
 }());
+//-------------------------------------------------------
 function updateScore() {
     try {
         if ((this.player.x === bomb.x) && (this.player.y === bomb.y)) {

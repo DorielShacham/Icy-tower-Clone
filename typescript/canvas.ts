@@ -2,13 +2,18 @@
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 
-const users: User[] = []
-const bomb = new Bomb();
-const coin = new Coin();
-
 const player = new Player();
+const bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+const coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+
+const users: User[] = []
+let bombs: Bomb[] = []
+let coins: Coin[] = []
 let floors: Floor[] = [];
+
 let lastFloorId = 0;
+let lastBombId = 0;
+let lastCoinId = 0;
 
 // Vertical offset for the canvas
 let canvasOffsetY = 0;
@@ -23,6 +28,7 @@ function moveCanvasUp() {
   }
 }
 
+//---------------------floors functions--------------------------------------
 //generate the floors
 function generateFloor() {
   const minGap = 100;
@@ -44,9 +50,36 @@ function generateFloor() {
 function removeFloors() {
   floors = floors.filter((floor) => floor.y + floor.height > -canvasOffsetY); // Remove floors above the canvas
 }
-//--
+//-----------------------bomb function----------------------------
 
-//-- gameover popup
+//generate the bomb
+function generateBomb() {
+  // const minGap = 50;
+  // const maxGap = 100;
+  const minWidth = 150;
+  const maxWidth = 100;
+
+  const lastBomb = bombs[bombs.length - 1];
+  const y = lastBomb ? lastBomb.y - 100 : canvas.height - 20 - canvasOffsetY; // Apply the vertical offset to the first bomb
+
+  // const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
+
+  const width = bombs.length === 0 ? canvas.width : Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
+  const x = bombs.length === 0 ? 0 : Math.floor(Math.random() * (canvas.width - width));
+
+  console.log(`x=`, x)
+  console.log(`width=`, width)
+
+  bombs.push(new Bomb(x, y, width, lastBombId));
+  console.log(`bombs array=`, bombs)
+  lastBombId++;
+}
+
+function removeBombs() {
+  bombs = bombs.filter((bomb) => bomb.y + bomb.height > -canvasOffsetY); // Remove bombs above the canvas
+}
+
+//------- gameover popup----------------------------
 let gameOver = false;
 function showGameOverPopup() {
   const popup = document.getElementById("popup")!;
@@ -59,7 +92,7 @@ function showGameOverPopup() {
   popup.appendChild(restartButton);
   popup.style.display = "block";
 }
-//--
+//-----------------------------------------------
 
 //movement left right
 let isLeftKeyPressed = false;
@@ -91,7 +124,7 @@ document.addEventListener("keyup", onKeyUp);
 document.addEventListener("keypress", onKeyPress);
 //---------------------------------------------------------------------
 //update frames
-let updateInterval: number; 
+let updateInterval: number;
 function update() {
   if (!gameOver) {
     moveCanvasUp();
@@ -146,12 +179,24 @@ function update() {
 
     removeFloors();
 
+
     if (floors.length === 0 || floors[floors.length - 1].y > 100) {
       generateFloor();
     } else if (player.y + player.height < canvas.height / 2) {
       // If the player is moving up and reaches a certain point, generate new floors
       generateFloor();
     }
+
+    if (bombs.length === 0 || bombs[bombs.length - 1].y > 100) {
+      generateBomb();
+    } else if (player.y + player.height < canvas.height / 2) {
+      // If the player is moving up and reaches a certain point, generate new bombs
+      generateBomb();
+    }
+
+    generateBomb();
+
+    removeBombs();
 
     if (player.y >= canvas.height) {
       gameOver = true;
@@ -172,6 +217,8 @@ function draw() {
   coin.drawCoin(ctx);
   for (const floor of floors) {
     floor.draw(ctx);
+    bomb.drawBomb(ctx);
+  coin.drawCoin(ctx);
   }
 
   // Reset the canvas transformation

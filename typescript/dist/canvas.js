@@ -1,12 +1,16 @@
 //---------------------------------------------------------------------
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-var users = [];
-var bomb = new Bomb();
-var coin = new Coin();
 var player = new Player();
+var bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+var coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+var users = [];
+var bombs = [];
+var coins = [];
 var floors = [];
 var lastFloorId = 0;
+var lastBombId = 0;
+var lastCoinId = 0;
 // Vertical offset for the canvas
 var canvasOffsetY = 0;
 var hasStartedMovingUp = false;
@@ -18,6 +22,7 @@ function moveCanvasUp() {
         canvasOffsetY += 1;
     }
 }
+//---------------------floors functions--------------------------------------
 //generate the floors
 function generateFloor() {
     var minGap = 100;
@@ -35,8 +40,28 @@ function generateFloor() {
 function removeFloors() {
     floors = floors.filter(function (floor) { return floor.y + floor.height > -canvasOffsetY; }); // Remove floors above the canvas
 }
-//--
-//-- gameover popup
+//-----------------------bomb function----------------------------
+//generate the bomb
+function generateBomb() {
+    // const minGap = 50;
+    // const maxGap = 100;
+    var minWidth = 150;
+    var maxWidth = 100;
+    var lastBomb = bombs[bombs.length - 1];
+    var y = lastBomb ? lastBomb.y - 100 : canvas.height - 20 - canvasOffsetY; // Apply the vertical offset to the first bomb
+    // const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
+    var width = bombs.length === 0 ? canvas.width : Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
+    var x = bombs.length === 0 ? 0 : Math.floor(Math.random() * (canvas.width - width));
+    console.log("x=", x);
+    console.log("width=", width);
+    bombs.push(new Bomb(x, y, width, lastBombId));
+    console.log("bombs array=", bombs);
+    lastBombId++;
+}
+function removeBombs() {
+    bombs = bombs.filter(function (bomb) { return bomb.y + bomb.height > -canvasOffsetY; }); // Remove bombs above the canvas
+}
+//------- gameover popup----------------------------
 var gameOver = false;
 function showGameOverPopup() {
     var popup = document.getElementById("popup");
@@ -49,7 +74,7 @@ function showGameOverPopup() {
     popup.appendChild(restartButton);
     popup.style.display = "block";
 }
-//--
+//-----------------------------------------------
 //movement left right
 var isLeftKeyPressed = false;
 var isRightKeyPressed = false;
@@ -137,6 +162,15 @@ function update() {
             // If the player is moving up and reaches a certain point, generate new floors
             generateFloor();
         }
+        if (bombs.length === 0 || bombs[bombs.length - 1].y > 100) {
+            generateBomb();
+        }
+        else if (player.y + player.height < canvas.height / 2) {
+            // If the player is moving up and reaches a certain point, generate new bombs
+            generateBomb();
+        }
+        generateBomb();
+        removeBombs();
         if (player.y >= canvas.height) {
             gameOver = true;
             showGameOverPopup();
@@ -156,6 +190,8 @@ function draw() {
     for (var _i = 0, floors_2 = floors; _i < floors_2.length; _i++) {
         var floor = floors_2[_i];
         floor.draw(ctx);
+        bomb.drawBomb(ctx);
+        coin.drawCoin(ctx);
     }
     // Reset the canvas transformation
     ctx.setTransform(1, 0, 0, 1, 0, 0);
