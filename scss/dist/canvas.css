@@ -1,26 +1,41 @@
 body {
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Center the content horizontally */
+  align-items: center;
+  /* Center the content vertically */
+  height: 100vh;
+  /* Set the body height to full viewport height */
+  margin: 0;
+  /* Remove default margin */
+  /* Dark blue to light green gradient background */
+  background: linear-gradient(45deg, #00060c, #012f3f, #0f0133, #044b74);
 }
 
 #canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
+  /* Your existing canvas styles */
   width: 800px;
   height: 800px;
-  border: 10px solid red;
-  margin: auto;
+  background-image: url("../../images/Ladder.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50px;
 }
 
 .restart-button {
-  background-color: #4CAF50;
+  background-color: #a7d1fa;
   border: none;
-  color: white;
-  padding: 10px 20px;
+  color: #111010;
+  padding: 20px 40px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 20px;
   margin: 4px 2px;
   cursor: pointer;
+  border-radius: 20px;
+  font-family: "Lumanosimo", cursive;
+  font-weight: bolder;
 }
