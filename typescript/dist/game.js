@@ -57,7 +57,7 @@ var Bomb = /** @class */ (function () {
     }
     Bomb.prototype.drawBomb = function (ctx) {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 40, 0, 2 * Math.PI);
+        ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fillStyle = "black";
     };
@@ -72,7 +72,7 @@ var Coin = /** @class */ (function () {
     }
     Coin.prototype.drawCoin = function (ctx) {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 40, 0, 2 * Math.PI);
+        ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fillStyle = "gold";
     };

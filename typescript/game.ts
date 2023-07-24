@@ -77,7 +77,7 @@ class Bomb {
 
   drawBomb(ctx: CanvasRenderingContext2D) {
       ctx.beginPath();
-      ctx.arc(this.x, this.y, 40, 0, 2*Math.PI);
+      ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
       ctx.stroke();
       ctx.fillStyle = "black";
     }
@@ -98,7 +98,7 @@ class Coin {
 
   drawCoin(ctx: CanvasRenderingContext2D) {
       ctx.beginPath();
-      ctx.arc(this.x, this.y, 40, 0, 2*Math.PI);
+      ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
       ctx.stroke();
       ctx.fillStyle = "gold";
     }
