@@ -42,50 +42,33 @@ function removeFloors() {
 }
 //-----------------------bomb function----------------------------
 //generate the bombs
-// function generateBomb() {
-//   const width = 30;
-//   const lastBomb = bombs[bombs.length - 1]; //get the last "bomb" element from the bombs array.
-//   const y = lastBomb ? lastBomb.y - 100 : canvas.height - 20 - canvasOffsetY; // determine the vertical position of the new "bomb" element
-//   const x = bombs.length === 0 ? 0 : Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "bomb" element
-//   console.log(`x=`, x)
-//   if (bombs.length < 5) {
-//     bombs.push(new Bomb(x, y, width, lastBombId));
-//     lastBombId++;
-//   }
-// }
 function generateBomb() {
     var width = 30;
     var x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "bomb" element
-    var y = player.y - 100; // determine the vertical position of the new "bomb" element above the player's position  
+    var y = canvas.height - 20; // determine the vertical position of the new "bomb" element above the player's position  
     if (bombs.length < 5) {
         bombs.push(new Bomb(x, y, width, lastBombId));
+        console.log(bombs);
         lastBombId++;
     }
 }
 function removeBombs() {
-    bombs = bombs.filter(function (bomb) { return bomb.y + bomb.height > -canvasOffsetY; }); // Remove bombs above the canvas
+    bombs = bombs.filter(function (bomb) { return bomb.y + bomb.height > -canvasOffsetY; }); // Remove bombs  the canvas
 }
 //---------------coin function---------
 //generate the coins
-// function generateCoin() {
-//   // const minGap = 50;
-//   // const maxGap = 100;
-//   const minWidth = 150;
-//   const maxWidth = 100;
-//   const lastCoin = coins[coins.length - 1];
-//   const y = lastCoin ? lastCoin.y - 100 : canvas.height - 20 - canvasOffsetY; // Apply the vertical offset to the first bomb
-//   // const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
-//   const width = coins.length === 0 ? canvas.width : Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
-//   const x = coins.length === 0 ? 0 : Math.floor(Math.random() * (canvas.width - width));
-//   console.log(`x=`, x)
-//   console.log(`width=`, width)
-//   coins.push(new Coin(x, y, width, lastCoinId));
-//   console.log(`coins array=`, coins)
-//   lastBombId++;
-// }
-// function removeCoins() {
-//   coins = coins.filter((coin) => coin.y + bomb.height > -canvasOffsetY); // Remove coins above the canvas
-// }
+function generateCoin() {
+    var width = 30;
+    var x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "coin" element
+    var y = player.y - 100; // determine the vertical position of the new "coin" element above the player's position  
+    if (coins.length < 5) {
+        coins.push(new Coin(x, y, width, lastBombId));
+        lastBombId++;
+    }
+}
+function removeCoins() {
+    coins = coins.filter(function (coin) { return coin.y + bomb.height > -canvasOffsetY; }); // Remove coins above the canvas
+}
 //------- gameover popup----------------------------
 var gameOver = false;
 function showGameOverPopup() {
@@ -132,8 +115,6 @@ document.addEventListener("keyup", onKeyUp);
 document.addEventListener("keypress", onKeyPress);
 //---------------------------------------------------------------------
 //update frames
-var bombGenerationDelay = 1000; // Set the delay in milliseconds (1 second in this example)
-var lastBombGenerationTime = 0; // Track the time of the last bomb generation
 var updateInterval;
 function update() {
     if (!gameOver) {
@@ -189,21 +170,15 @@ function update() {
             // If the player is moving up and reaches a certain point, generate new floors
             generateFloor();
         }
-        var currentTime = Date.now();
         if (bombs.length === 0 || bombs[bombs.length - 1].y > 150) {
-            if (currentTime - lastBombGenerationTime >= bombGenerationDelay) {
-                generateBomb();
-                lastBombGenerationTime = currentTime;
-            }
+            generateBomb();
         }
         else if (player.y + player.height < canvas.height / 2) {
             // If the player is moving up and reaches a certain point, generate new bombs
-            if (currentTime - lastBombGenerationTime >= bombGenerationDelay) {
-                generateBomb();
-                lastBombGenerationTime = currentTime;
-            }
+            generateBomb();
         }
         removeBombs();
+        checkCollisionBomb();
         if (player.y >= canvas.height) {
             gameOver = true;
             showGameOverPopup();
@@ -242,6 +217,7 @@ generateBomb();
 updateInterval = setInterval(update, 800 / 60);
 draw();
 //------------render score---------
+//need to be FIX!!!!
 function renderScore() {
     var html = document.querySelector('#score');
     var users = localStorage.getItem('users');
@@ -263,5 +239,33 @@ function renderTableScore() {
     }
     catch (error) {
         console.error(error);
+    }
+}
+//------------------check collision-----------------------------
+function checkCollisionBomb() {
+    var bombCollision = false;
+    var targetBombId = null; // Keep track of the ID of the target floor
+    // Check collision with the first bomb separately
+    var firstBomb = bombs[0];
+    if (player.x < firstBomb.x + firstBomb.width &&
+        player.x + player.width > firstBomb.x &&
+        player.y + player.height > firstBomb.y) {
+        bombCollision = true;
+        console.log("collosion bomb");
+        targetBombId = firstBomb.idB; // Save the ID of the first floor
+    }
+    else {
+        // Check collision with other floors
+        for (var _i = 0, bombs_2 = bombs; _i < bombs_2.length; _i++) {
+            var bomb_2 = bombs_2[_i];
+            if (player.x < bomb_2.x + bomb_2.width &&
+                player.x + player.width > bomb_2.x &&
+                player.y + player.height > bomb_2.y) {
+                bombCollision = true;
+                console.log("collosion bomb");
+                targetBombId = bomb_2.idB; // Save the ID of the target floor
+                break;
+            }
+        }
     }
 }
