@@ -74,35 +74,39 @@ var Floor = /** @class */ (function () {
     return Floor;
 }());
 var Bomb = /** @class */ (function () {
-    function Bomb() {
-        this.x = Math.floor(Math.random() * 500); //random position on x
-        this.y = Math.floor(Math.random() * 500); //random position on y
+    function Bomb(x, y, width, idB) {
+        this.x = Math.floor(Math.random() * 1000); //random position on x
+        this.y = Math.floor(Math.random() * 1000); //random position on y
         this.width = 30;
         this.height = 30;
+        this.idB = idB; // Assign the ID to the bomb
     }
     Bomb.prototype.drawBomb = function (ctx) {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 40, 0, 2 * Math.PI);
+        ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
         ctx.stroke();
+        ctx.strokeStyle = "red";
         ctx.fillStyle = "black";
     };
     return Bomb;
 }());
 var Coin = /** @class */ (function () {
-    function Coin() {
+    function Coin(x, y, width, idC) {
         this.x = Math.floor(Math.random() * 500);
         this.y = Math.floor(Math.random() * 500);
         this.width = 30;
         this.height = 30;
+        this.idC = idC; // Assign the ID to the coin   
     }
     Coin.prototype.drawCoin = function (ctx) {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 40, 0, 2 * Math.PI);
+        ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
         ctx.stroke();
-        ctx.fillStyle = "gold";
+        ctx.strokeStyle = "gold";
     };
     return Coin;
 }());
+//-------------------------------------------------------
 function updateScore() {
     try {
         if ((this.player.x === bomb.x) && (this.player.y === bomb.y)) {

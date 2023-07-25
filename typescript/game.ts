@@ -95,49 +95,53 @@ class Floor {
 }
 
 class Bomb {
+  idB: number; // Add an ID property to the Bomb class
   x: number;
   y: number;
   width: number;
   height: number;
 
-  constructor() {
-    this.x = Math.floor(Math.random()*500); //random position on x
-    this.y = Math.floor(Math.random()*500); //random position on y
+  constructor(x:number, y:number, width:number, idB: number) {
+    this.x = Math.floor(Math.random()*1000); //random position on x
+    this.y = Math.floor(Math.random()*1000); //random position on y
     this.width = 30;
-    this.height = 30;      
+    this.height = 30;
+    this.idB = idB; // Assign the ID to the bomb
   }
 
   drawBomb(ctx: CanvasRenderingContext2D) {
       ctx.beginPath();
-      ctx.arc(this.x, this.y, 40, 0, 2*Math.PI);
+      ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
       ctx.stroke();
+      ctx.strokeStyle = "red";
       ctx.fillStyle = "black";
     }
 }
 
 class Coin {
+  idC: number; // Add an ID property to the Coin class
   x: number;
   y: number;
   width: number;
   height: number;
 
-  constructor() {
+  constructor(x:number, y:number, width:number, idC:number) {
     this.x = Math.floor(Math.random()*500);
     this.y = Math.floor(Math.random()*500);
     this.width = 30;
-    this.height = 30;      
+    this.height = 30;
+    this.idC = idC;   // Assign the ID to the coin   
   }
 
   drawCoin(ctx: CanvasRenderingContext2D) {
       ctx.beginPath();
-      ctx.arc(this.x, this.y, 40, 0, 2*Math.PI);
+      ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
       ctx.stroke();
-      ctx.fillStyle = "gold";
+      ctx.strokeStyle = "gold";
     }
 }
 
-
-
+//-------------------------------------------------------
 function updateScore() {
   try {
     if ((this.player.x === bomb.x) && (this.player.y === bomb.y)) {
