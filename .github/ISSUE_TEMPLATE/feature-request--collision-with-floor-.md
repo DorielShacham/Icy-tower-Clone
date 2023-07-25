@@ -8,4 +8,4 @@ assignees: DorielShacham
 ---
 
 **Adding the scoreboard.**
-When the scoreboard is shown make it sort by top score players [...]
+When the player jumps, jump to the x+y floor [...]
