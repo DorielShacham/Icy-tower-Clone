@@ -22,7 +22,10 @@ function moveCanvasUp() {
         canvasOffsetY += 1;
     }
 }
+
 //---------------------floors functions--------------------------------------
+var floorImageUrl = '../../images/stick.png';
+
 //generate the floors
 function generateFloor() {
     var minGap = 100;
@@ -34,7 +37,7 @@ function generateFloor() {
     var gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
     var width = floors.length === 0 ? canvas.width : Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
     var x = floors.length === 0 ? 0 : Math.floor(Math.random() * (canvas.width - width));
-    floors.push(new Floor(x, y, width, lastFloorId));
+    floors.push(new Floor(x, y, width, lastFloorId, floorImageUrl));
     lastFloorId++;
 }
 function removeFloors() {
@@ -74,11 +77,12 @@ var gameOver = false;
 function showGameOverPopup() {
     var popup = document.getElementById("popup");
     var restartButton = document.createElement("button");
+    restartButton.classList.add('restart-button');
     restartButton.textContent = "Restart";
     restartButton.addEventListener("click", function () {
         location.reload();
     });
-    popup.innerHTML = "You touched the floor! Game Over!";
+    // popup.innerHTML = "You touched the floor! Game Over!";
     popup.appendChild(restartButton);
     popup.style.display = "block";
 }
