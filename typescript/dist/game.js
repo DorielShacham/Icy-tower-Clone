@@ -13,10 +13,14 @@ var Player = /** @class */ (function () {
     function Player() {
         this.x = 600;
         this.y = canvas.height - 50; // Set the initial y position above the first floor
-        this.width = 30;
-        this.height = 30;
-        this.velocityY = 0;
+        this.width = 110;
+        this.height = 110;
+        this.velocityY = -10;
         this.isJumping = false;
+        this.rotation = 0; // Set the initial rotation angle to 0 degrees
+        // Load the image for the player
+        this.image = new Image();
+        this.image.src = '../../images/player/player.png'; // Replace with the actual image path
     }
     Player.prototype.jump = function () {
         if (!this.isJumping) {
@@ -27,24 +31,45 @@ var Player = /** @class */ (function () {
     Player.prototype.update = function () {
         this.y += this.velocityY;
         this.velocityY += 0.5;
+        // Apply rotation only when the player is jumping or falling
+        // Apply rotation only when the player is jumping
+        if (this.isJumping) {
+            // Increase the rotation angle while jumping
+            this.rotation += 5; // Adjust the value as needed for the rotation speed
+            if (this.rotation >= 360) {
+                // Wrap the rotation angle around 360 degrees
+                this.rotation = 0;
+            }
+        }
+        else {
+            // If the player is not jumping, set the rotation angle to 0
+            this.rotation = 0;
+        }
     };
     Player.prototype.draw = function (ctx) {
-        ctx.fillStyle = "blue";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        // Draw the player image with rotation
+        ctx.save(); // Save the current context state to restore it later
+        ctx.translate(this.x + this.width / 2, this.y + this.height / 2); // Translate to the center of the player
+        ctx.rotate((this.rotation * Math.PI) / 180); // Apply rotation
+        ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height); // Draw the player
+        ctx.restore(); // Restore the saved context state
     };
     return Player;
 }());
 var Floor = /** @class */ (function () {
-    function Floor(x, y, width, id) {
+    function Floor(x, y, width, id, imageUrl) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = 20;
         this.id = id; // Assign the ID to the floor
+        // Load the image for the floor
+        this.image = new Image();
+        this.image.src = imageUrl;
     }
     Floor.prototype.draw = function (ctx) {
-        ctx.fillStyle = "gray";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        // Draw the floor image instead of a rectangle
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     };
     return Floor;
 }());
