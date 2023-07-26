@@ -59,7 +59,7 @@ function generateCoin() {
     var width = 30;
     var x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "coin" element
     var y = player.y - 20; // determine the vertical position of the new "coin" element above the player's position  
-    if (coins.length < 5) {
+    if (coins.length < 10) {
         coins.push(new Coin(x, y, width, lastCoinId));
         console.log(coins);
         lastCoinId++;
