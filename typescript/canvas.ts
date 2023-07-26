@@ -3,6 +3,7 @@ const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 const username = localStorage.getItem("username");  //get the username from local storage
 const player = new Player(username!);
+const games :Player[] = [];
 const bomb = new Bomb(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
 const coin = new Coin(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
 
@@ -10,6 +11,7 @@ const coin = new Coin(Math.floor(Math.random()*500), Math.floor(Math.random()*50
 let bombs: Bomb[] = [];
 let coins: Coin[] = [];
 let floors: Floor[] = [];
+
 
 let lastFloorId = 0;
 let lastBombId = 0;
@@ -247,10 +249,19 @@ function update() {
 
     generateBomb();
     removeBombs();
-    checkCollisionBomb()
+    const isBomb=checkCollisionBomb();
+    //if the player touch the bomb the score will be -10
+    if(isBomb){ 
+      player.score-=10;
+      console.log(`score: ${player.score}`)
+    }
 
     if (player.y >= canvas.height) {
       gameOver = true;
+      games.push(player);
+      // save games in local storage
+      localStorage.setItem('games',JSON.stringify(games));
+      
       showGameOverPopup();
       clearInterval(updateInterval); // Stop the update loop when the game is over
     }

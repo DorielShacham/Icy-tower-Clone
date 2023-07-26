@@ -3,6 +3,7 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var username = localStorage.getItem("username"); //get the username from local storage
 var player = new Player(username);
+var games = [];
 var bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 var coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 var bombs = [];
@@ -210,9 +211,17 @@ function update() {
         }
         generateBomb();
         removeBombs();
-        checkCollisionBomb();
+        var isBomb = checkCollisionBomb();
+        //if the player touch the bomb the score will be -10
+        if (isBomb) {
+            player.score -= 10;
+            console.log("score: " + player.score);
+        }
         if (player.y >= canvas.height) {
             gameOver = true;
+            games.push(player);
+            // save games in local storage
+            localStorage.setItem('games', JSON.stringify(games));
             showGameOverPopup();
             clearInterval(updateInterval); // Stop the update loop when the game is over
         }

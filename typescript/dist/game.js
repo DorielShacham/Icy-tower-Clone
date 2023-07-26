@@ -1,4 +1,15 @@
 // model (classes)
+var Game = /** @class */ (function () {
+    function Game(playerName, score, date) {
+        this.playerName = playerName;
+        this.score = score;
+        this.date = date;
+        this.gameId = ++Game.counterId;
+    }
+    //for score page save only relevant data
+    Game.counterId = 0;
+    return Game;
+}());
 var Player = /** @class */ (function () {
     function Player(userName) {
         this.userName = userName;

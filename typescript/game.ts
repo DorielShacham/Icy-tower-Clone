@@ -1,7 +1,13 @@
 // model (classes)
 
-
-
+class Game {
+//for score page save only relevant data
+  static counterId: number = 0;
+  gameId: number;
+  constructor(public playerName: string, public score: number ,public date: Date ){
+    this.gameId = ++Game.counterId; 
+  }
+}
 class Player {
   x: number;
   y: number;
