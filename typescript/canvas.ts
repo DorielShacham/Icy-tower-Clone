@@ -20,14 +20,6 @@ let canvasOffsetY = 0;
 let hasStartedMovingUp = false;
 let hasStartedMovingDown = false;
 
-// Function to move the canvas up
-// function moveCanvasUp() {
-//   if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
-//     // Start moving the canvas up only when the player's y position is less than half of the canvas height
-//     canvasOffsetY += 1;
-//   }
-// }
-
 //---------------------floors functions--------------------------------------
 
 const floorImageUrl = "../../images/stick.png";
@@ -77,7 +69,6 @@ function generateBomb() {
 }
 
 function removeBombs() {
-
   bombs = bombs.filter((bomb) => (bomb.y + bomb.height < 690)); // Remove bombs beneath the canvas
 }
 
@@ -91,14 +82,15 @@ function generateCoin() {
   const x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "coin" element
   const y = player.y - 20; // determine the vertical position of the new "coin" element above the player's position  
 
-  if (coins.length < 15) {
+  if (coins.length < 5) {
     coins.push(new Coin(x, y, width, lastCoinId));
-    lastBombId++;
+    console.log(coins)
+    lastCoinId++;
   }
 }
 
 function removeCoins() {
-  coins = coins.filter((coin) => coin.y + bomb.height < 690); // Remove coins beneath the canvas
+  coins = coins.filter((coin) => coin.y + coin.height < 690); // Remove coins beneath the canvas
 }
 
 //------- gameover popup----------------------------
@@ -153,12 +145,11 @@ let updateInterval: number;
 function update() {
   //This function is responsible for updating the game state, handling collisions, and generating new floors and bombs.
   if (!gameOver) {
-    //moveCanvasUp();
 
     if (isLeftKeyPressed) {
-      player.x -= 5;
+      player.x -= 2;
     } else if (isRightKeyPressed) {
-      player.x += 5;
+      player.x += 2;
     }
     player.update();
 
@@ -249,6 +240,10 @@ function update() {
     removeBombs();
     checkCollisionBomb()
 
+    generateCoin();
+    removeCoins();
+    checkCollisionCoin()
+
     if (player.y >= canvas.height) {
       gameOver = true;
       showGameOverPopup();
@@ -266,8 +261,7 @@ function draw() {
 
   // Draw player & floors & bomb & coins
   player.draw(ctx);
-  coin.animation(ctx)
-  
+
    for (const floor of floors) {
     floor.draw(ctx);
   }
@@ -278,7 +272,8 @@ function draw() {
   }
 
   for (const coin of coins){
-    
+    coin.animation(ctx);
+    coin.newPos()
   }
 
   // Reset the canvas transformation
@@ -290,7 +285,7 @@ function draw() {
 
 generateFloor();
 generateBomb();
-//generateCoin();
+generateCoin();
 draw();
 updateInterval = setInterval(update, 800 / 60);
 
@@ -341,5 +336,23 @@ function checkCollisionBomb() {
     }
   }
 
+function checkCollisionCoin(){
+  let coinCollision = false;
+  let targetCoinId: number | null = null; // Keep track of the ID of the target floor
 
+    for (const coin of coins) {
+      if (
+        coin.x < player.x + player.width &&
+        coin.x + coin.width > player.x &&
+        coin.y + coin.height > player.y
+      ) {
+        coinCollision = true;
+        console.log(`collosion coin`)
+        targetCoinId = coin.idC; // Save the ID of the target coin
+        console.log(`targetCoinId:`, targetCoinId)
+        coins = coins.filter((coin) => (coin.idC !== targetCoinId)); // Remove the bomb that hit 
 
+        return coinCollision;
+      }
+    }
+}

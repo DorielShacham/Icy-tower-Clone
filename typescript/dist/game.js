@@ -74,7 +74,7 @@ var Bomb = /** @class */ (function () {
     function Bomb(x, y, width, idB) {
         this.x = Math.floor(Math.random() * 690); //random position on x
         this.y = Math.floor(Math.random() * 600); //random position on y
-        this.width = 40;
+        this.width = 30;
         this.height = 40;
         this.idB = idB; // Assign the ID to the bomb
         this.image = document.querySelector('#bomb');
@@ -84,28 +84,29 @@ var Bomb = /** @class */ (function () {
         };
     }
     Bomb.prototype.drawBomb = function (ctx) {
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        //ctx.strokeRect(this.x, this.y, this.width, this.height)
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     };
     return Bomb;
 }());
 var Coin = /** @class */ (function () {
     function Coin(x, y, width, idC) {
-        if (x === void 0) { x = Math.floor(Math.random() * 690); }
-        if (y === void 0) { y = Math.floor(Math.random() * 600); }
-        if (width === void 0) { width = 30; }
-        this.x = x;
-        this.y = y;
-        this.width = width;
+        this.x = Math.floor(Math.random() * 690);
+        this.y = Math.floor(Math.random() * 600);
+        this.width = 30;
         this.height = 30;
         this.idC = idC; // Assign the ID to the coin 
         this.image = document.querySelector('#coin');
         this.frameX = 0;
         this.speedFrame = 0;
         this.speed = 5;
+        this.speedY = 1;
+        this.newPos = function () {
+            this.y += this.speedY;
+        };
     }
     Coin.prototype.animation = function (ctx) {
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        //ctx.strokeRect(this.x, this.y, this.width, this.height);
         var coinWidth = 170;
         var coinHeight = 170;
         ctx.clearRect(0, 0, this.width, this.height);
