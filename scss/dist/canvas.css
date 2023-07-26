@@ -15,8 +15,8 @@ body {
 
 #canvas {
   /* Your existing canvas styles */
-  width: 800px;
-  height: 800px;
+  width: 700px;
+  height: 700px;
   background-image: url("../../images/Ladder.jpg");
   background-size: cover;
   background-repeat: no-repeat;

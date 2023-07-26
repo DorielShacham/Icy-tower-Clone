@@ -78,7 +78,10 @@ function generateBomb() {
 
 function removeBombs() {
 
-  bombs = bombs.filter((bomb) => bomb.y + bomb.height > -canvasOffsetY); // Remove bombs  the canvas
+  bombs = bombs.filter((bomb) => 
+  (bomb.y + bomb.height < -700) || (bomb.y + bomb.height > 0) ||
+  (bomb.x + bomb.width > 700) || (bomb.x + bomb.width < 0)
+  ); // Remove bombs beneath the canvas
 }
 
 //---------------coin function---------
@@ -274,8 +277,8 @@ function draw() {
   player.draw(ctx);
   bomb.drawBomb(ctx);
   coin.drawCoin(ctx);
-  //coin.animation()
-  for (const floor of floors) {
+
+   for (const floor of floors) {
     floor.draw(ctx);
   }
 
@@ -323,17 +326,17 @@ function checkCollisionBomb() {
   let targetBombId: number | null = null; // Keep track of the ID of the target floor
 
   // Check collision with the first bomb separately
-  const firstBomb = bombs[0];
-  if (
-    player.x < firstBomb.x + firstBomb.width &&
-    player.x + player.width > firstBomb.x &&
-    player.y + player.height > firstBomb.y
-  ) {
-    bombCollision = true;
-    console.log(`collosion bomb`)
-    targetBombId = firstBomb.idB; // Save the ID of the first floor
-  } else {
-    // Check collision with other floors
+  // const firstBomb = bombs[0];
+  // if (
+  //   player.x < firstBomb.x + firstBomb.width &&
+  //   player.x + player.width > firstBomb.x &&
+  //   player.y + player.height > firstBomb.y
+  // ) {
+  //   bombCollision = true;
+  //   console.log(`collosion bomb`)
+  //   targetBombId = firstBomb.idB; // Save the ID of the first floor
+  // } else {
+  //   // Check collision with other floors
     for (const bomb of bombs) {
       if (
         player.x < bomb.x + bomb.width &&
@@ -343,8 +346,8 @@ function checkCollisionBomb() {
         bombCollision = true;
         console.log(`collosion bomb`)
         targetBombId = bomb.idB; // Save the ID of the target floor
-        break;
+        return bombCollision;
       }
     }
   }
-}
+
