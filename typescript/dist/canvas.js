@@ -251,18 +251,16 @@ draw();
 updateInterval = setInterval(update, 800 / 60);
 //------------render score---------
 //need to be FIX!!!!
-function renderScore() {
-    var html = document.querySelector("#score");
-    var users = localStorage.getItem("users");
-    try {
-        if (!html)
-            throw new Error("no element");
-        html.innerHTML = "<h2>" + user.userName + " your current score is: " + users.score + "</h2>";
-    }
-    catch (error) {
-        console.error(error);
-    }
-}
+// function renderScore() {
+//   const html = document.querySelector("#score");
+//   const users = localStorage.getItem("users");
+//   try {
+//     if (!html) throw new Error("no element");
+//     html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 function renderTableScore() {
     try {
         var scoreTable = document.querySelector("#scoreTable");
@@ -285,9 +283,9 @@ function checkCollisionBomb() {
             bomb_2.y + bomb_2.height > player.y) {
             bombCollision = true;
             console.log("collosion bomb");
-            targetBombId = bomb_2.idB; // Save the ID of the target floor
-            conso;
-            bombs = bombs.filter(function (bomb) { return (bomb.IdB === targetBombId); }); // Remove the bomb that hit 
+            targetBombId = bomb_2.idB; // Save the ID of the target bomb
+            console.log("targetBombId:", targetBombId);
+            bombs = bombs.filter(function (bomb) { return (bomb.idB !== targetBombId); }); // Remove the bomb that hit 
             return bombCollision;
         }
     }

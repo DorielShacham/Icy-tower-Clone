@@ -296,16 +296,16 @@ updateInterval = setInterval(update, 800 / 60);
 
 //------------render score---------
 //need to be FIX!!!!
-function renderScore() {
-  const html = document.querySelector("#score");
-  const users = localStorage.getItem("users");
-  try {
-    if (!html) throw new Error("no element");
-    html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
-  } catch (error) {
-    console.error(error);
-  }
-}
+// function renderScore() {
+//   const html = document.querySelector("#score");
+//   const users = localStorage.getItem("users");
+//   try {
+//     if (!html) throw new Error("no element");
+//     html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 
 function renderTableScore() {
   try {
@@ -332,9 +332,9 @@ function checkCollisionBomb() {
       ) {
         bombCollision = true;
         console.log(`collosion bomb`)
-        targetBombId = bomb.idB; // Save the ID of the target floor
-        conso
-        bombs = bombs.filter((bomb) => (bomb.IdB === targetBombId)); // Remove the bomb that hit 
+        targetBombId = bomb.idB; // Save the ID of the target bomb
+        console.log(`targetBombId:`, targetBombId)
+        bombs = bombs.filter((bomb) => (bomb.idB !== targetBombId)); // Remove the bomb that hit 
 
         return bombCollision;
       }
