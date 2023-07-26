@@ -104,17 +104,7 @@ var Coin = /** @class */ (function () {
         this.speed = 5;
     }
     Coin.prototype.drawCoin = function (ctx) {
-        // ctx.beginPath();
-        // ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
-        // ctx.fillStyle = "gold";
-        // ctx.fill()
-        // ctx.strokeStyle = "gold";
-        // ctx.stroke();
-        //const coinWidth = 192;
-        //const coinHeight = 172;
-        //ctx.drawImage(this.image, 0, 0, coinWidth, coinHeight, this.x, this.y, this.width, this.height)
         ctx.strokeRect(this.x, this.y, this.width, this.height);
-        //let frameX: number = 0; 
         this.animation();
     };
     //https://www.youtube.com/watch?v=CY0HE277IBM&ab_channel=Frankslaboratory
