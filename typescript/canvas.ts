@@ -78,10 +78,7 @@ function generateBomb() {
 
 function removeBombs() {
 
-  bombs = bombs.filter((bomb) => 
-  (bomb.y + bomb.height < -700) || (bomb.y + bomb.height > 0) ||
-  (bomb.x + bomb.width > 700) || (bomb.x + bomb.width < 0)
-  ); // Remove bombs beneath the canvas
+  bombs = bombs.filter((bomb) => (bomb.y + bomb.height < 690)); // Remove bombs beneath the canvas
 }
 
 //---------------coin function---------
@@ -156,7 +153,7 @@ let updateInterval: number;
 function update() {
   //This function is responsible for updating the game state, handling collisions, and generating new floors and bombs.
   if (!gameOver) {
-    moveCanvasUp();
+    //moveCanvasUp();
 
     if (isLeftKeyPressed) {
       player.x -= 5;
@@ -248,13 +245,7 @@ function update() {
       generateFloor();
     }
 
-   // if (bombs.length === 0 || bombs[bombs.length - 1].y > 150) {
-      generateBomb();
-   // } else if (player.y + player.height < canvas.height / 2) {
-      // If the player is moving up and reaches a certain point, generate new bombs
-    //  generateBomb();
-   // }
-
+    generateBomb();
     removeBombs();
     checkCollisionBomb()
 
@@ -275,15 +266,19 @@ function draw() {
 
   // Draw player & floors & bomb & coins
   player.draw(ctx);
-  bomb.drawBomb(ctx);
-  coin.drawCoin(ctx);
-
+  coin.animation(ctx)
+  
    for (const floor of floors) {
     floor.draw(ctx);
   }
 
   for (const bomb of bombs) {
     bomb.drawBomb(ctx);
+    bomb.newPos();
+  }
+
+  for (const coin of coins){
+    
   }
 
   // Reset the canvas transformation
@@ -329,23 +324,11 @@ function checkCollisionBomb() {
   let bombCollision = false;
   let targetBombId: number | null = null; // Keep track of the ID of the target floor
 
-  // Check collision with the first bomb separately
-  // const firstBomb = bombs[0];
-  // if (
-  //   player.x < firstBomb.x + firstBomb.width &&
-  //   player.x + player.width > firstBomb.x &&
-  //   player.y + player.height > firstBomb.y
-  // ) {
-  //   bombCollision = true;
-  //   console.log(`collosion bomb`)
-  //   targetBombId = firstBomb.idB; // Save the ID of the first floor
-  // } else {
-  //   // Check collision with other floors
     for (const bomb of bombs) {
       if (
-        player.x < bomb.x + bomb.width &&
-        player.x + player.width > bomb.x &&
-        player.y + player.height > bomb.y
+        bomb.x < player.x + player.width &&
+        bomb.x + bomb.width > player.x &&
+        bomb.y + bomb.height > player.y
       ) {
         bombCollision = true;
         console.log(`collosion bomb`)

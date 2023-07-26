@@ -65,21 +65,18 @@ var Floor = /** @class */ (function () {
 }());
 var Bomb = /** @class */ (function () {
     function Bomb(x, y, width, idB) {
-        this.x = Math.floor(Math.random() * 1000); //random position on x
-        this.y = Math.floor(Math.random() * 1000); //random position on y
+        this.x = Math.floor(Math.random() * 690); //random position on x
+        this.y = Math.floor(Math.random() * 600); //random position on y
         this.width = 40;
         this.height = 40;
         this.idB = idB; // Assign the ID to the bomb
         this.image = document.querySelector('#bomb');
-        this.bSpeed = 5 + this.y;
+        this.speedY = 1;
+        this.newPos = function () {
+            this.y += this.speedY;
+        };
     }
     Bomb.prototype.drawBomb = function (ctx) {
-        // ctx.beginPath();
-        // ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
-        // ctx.fillStyle = "black";
-        // ctx.fill()
-        // ctx.strokeStyle = "black";
-        // ctx.stroke();
         ctx.strokeRect(this.x, this.y, this.width, this.height);
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     };
@@ -87,9 +84,12 @@ var Bomb = /** @class */ (function () {
 }());
 var Coin = /** @class */ (function () {
     function Coin(x, y, width, idC) {
-        this.x = Math.floor(Math.random() * 500);
-        this.y = Math.floor(Math.random() * 500);
-        this.width = 30;
+        if (x === void 0) { x = Math.floor(Math.random() * 690); }
+        if (y === void 0) { y = Math.floor(Math.random() * 600); }
+        if (width === void 0) { width = 30; }
+        this.x = x;
+        this.y = y;
+        this.width = width;
         this.height = 30;
         this.idC = idC; // Assign the ID to the coin 
         this.image = document.querySelector('#coin');
@@ -97,12 +97,8 @@ var Coin = /** @class */ (function () {
         this.speedFrame = 0;
         this.speed = 5;
     }
-    Coin.prototype.drawCoin = function (ctx) {
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
-        this.animation.bind(this)(ctx); // Bind the function to the current instance
-    };
     Coin.prototype.animation = function (ctx) {
-        var _this = this;
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
         var coinWidth = 170;
         var coinHeight = 170;
         ctx.clearRect(0, 0, this.width, this.height);
@@ -114,7 +110,6 @@ var Coin = /** @class */ (function () {
                 this.frameX = 0;
         }
         this.speedFrame++;
-        requestAnimationFrame(function () { return _this.animation(ctx); }); // Use an arrow function to preserve the this context
     };
     return Coin;
 }());

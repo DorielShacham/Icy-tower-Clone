@@ -58,10 +58,7 @@ function generateBomb() {
     }
 }
 function removeBombs() {
-    bombs = bombs.filter(function (bomb) {
-        return (bomb.y + bomb.height < -700) || (bomb.y + bomb.height > 0) ||
-            (bomb.x + bomb.width > 700) || (bomb.x + bomb.width < 0);
-    }); // Remove bombs beneath the canvas
+    bombs = bombs.filter(function (bomb) { return (bomb.y + bomb.height < 690); }); // Remove bombs beneath the canvas
 }
 //---------------coin function---------
 //generate the coins
@@ -128,7 +125,7 @@ var updateInterval;
 function update() {
     //This function is responsible for updating the game state, handling collisions, and generating new floors and bombs.
     if (!gameOver) {
-        moveCanvasUp();
+        //moveCanvasUp();
         if (isLeftKeyPressed) {
             player.x -= 5;
         }
@@ -211,12 +208,7 @@ function update() {
             // If the player is moving up and reaches a certain point, generate new floors
             generateFloor();
         }
-        // if (bombs.length === 0 || bombs[bombs.length - 1].y > 150) {
         generateBomb();
-        // } else if (player.y + player.height < canvas.height / 2) {
-        // If the player is moving up and reaches a certain point, generate new bombs
-        //  generateBomb();
-        // }
         removeBombs();
         checkCollisionBomb();
         if (player.y >= canvas.height) {
@@ -234,8 +226,7 @@ function draw() {
     ctx.translate(0, canvasOffsetY); // creating the effect of the player and other objects moving up in the game world
     // Draw player & floors & bomb & coins
     player.draw(ctx);
-    bomb.drawBomb(ctx);
-    coin.drawCoin(ctx);
+    coin.animation(ctx);
     for (var _i = 0, floors_2 = floors; _i < floors_2.length; _i++) {
         var floor = floors_2[_i];
         floor.draw(ctx);
@@ -243,6 +234,10 @@ function draw() {
     for (var _a = 0, bombs_1 = bombs; _a < bombs_1.length; _a++) {
         var bomb_1 = bombs_1[_a];
         bomb_1.drawBomb(ctx);
+        bomb_1.newPos();
+    }
+    for (var _b = 0, coins_1 = coins; _b < coins_1.length; _b++) {
+        var coin_1 = coins_1[_b];
     }
     // Reset the canvas transformation
     ctx.setTransform(1, 0, 0, 1, 0, 0); //resets the canvas transformation, undoing the previous vertical offset applied
@@ -279,23 +274,11 @@ updateInterval = setInterval(update, 800 / 60);
 function checkCollisionBomb() {
     var bombCollision = false;
     var targetBombId = null; // Keep track of the ID of the target floor
-    // Check collision with the first bomb separately
-    // const firstBomb = bombs[0];
-    // if (
-    //   player.x < firstBomb.x + firstBomb.width &&
-    //   player.x + player.width > firstBomb.x &&
-    //   player.y + player.height > firstBomb.y
-    // ) {
-    //   bombCollision = true;
-    //   console.log(`collosion bomb`)
-    //   targetBombId = firstBomb.idB; // Save the ID of the first floor
-    // } else {
-    //   // Check collision with other floors
     for (var _i = 0, bombs_2 = bombs; _i < bombs_2.length; _i++) {
         var bomb_2 = bombs_2[_i];
-        if (player.x < bomb_2.x + bomb_2.width &&
-            player.x + player.width > bomb_2.x &&
-            player.y + player.height > bomb_2.y) {
+        if (bomb_2.x < player.x + player.width &&
+            bomb_2.x + bomb_2.width > player.x &&
+            bomb_2.y + bomb_2.height > player.y) {
             bombCollision = true;
             console.log("collosion bomb");
             targetBombId = bomb_2.idB; // Save the ID of the target floor
