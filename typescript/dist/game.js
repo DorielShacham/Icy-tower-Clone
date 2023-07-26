@@ -1,16 +1,9 @@
 // model (classes)
-var User = /** @class */ (function () {
-    function User(userName, score, player) {
-        if (score === void 0) { score = 0; }
-        this.userName = userName;
-        this.score = score;
-        this.player = player;
-        updateScore();
-    }
-    return User;
-}());
 var Player = /** @class */ (function () {
-    function Player() {
+    function Player(userName) {
+        this.userName = userName;
+        this.date = new Date();
+        this.score = 0;
         this.x = 600;
         this.y = canvas.height - 50; // Set the initial y position above the first floor
         this.width = 50;

@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-var player = new Player();
+var username = localStorage.getItem("username"); //get the username from local storage
+var player = new Player(username);
 var bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 var coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
-var users = [];
 var bombs = [];
 var coins = [];
 var floors = [];
@@ -16,12 +16,12 @@ var canvasOffsetY = 0;
 var hasStartedMovingUp = false;
 var hasStartedMovingDown = false;
 // Function to move the canvas up
-// function moveCanvasUp() {
-//   if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
-//     // Start moving the canvas up only when the player's y position is less than half of the canvas height
-//     canvasOffsetY += 1;
-//   }
-// }
+function moveCanvasUp() {
+    if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
+        // Start moving the canvas up only when the player's y position is less than half of the canvas height
+        canvasOffsetY += 1;
+    }
+}
 //---------------------floors functions--------------------------------------
 var floorImageUrl = "../../images/stick.png";
 //generate the floors
@@ -256,29 +256,25 @@ draw();
 updateInterval = setInterval(update, 800 / 60);
 //------------render score---------
 //need to be FIX!!!!
-function renderScore() {
-    var html = document.querySelector("#score");
-    var users = localStorage.getItem("users");
-    try {
-        if (!html)
-            throw new Error("no element");
-        html.innerHTML = "<h2>" + user.userName + " your current score is: " + users.score + "</h2>";
-    }
-    catch (error) {
-        console.error(error);
-    }
-}
-function renderTableScore() {
-    try {
-        var scoreTable = document.querySelector("#scoreTable");
-        if (!scoreTable)
-            throw new Error("no element");
-        var htmlScoreTable = "<h2> </h2>";
-    }
-    catch (error) {
-        console.error(error);
-    }
-}
+// function renderScore() {
+//   const html = document.querySelector("#score");
+//   const users = localStorage.getItem("users");
+//   try {
+//     if (!html) throw new Error("no element");
+//     html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+// function renderTableScore() {
+//   try {
+//     const scoreTable = document.querySelector("#scoreTable");
+//     if (!scoreTable) throw new Error("no element");
+//     const htmlScoreTable = `<h2> </h2>`;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 //------------------check collision-----------------------------
 function checkCollisionBomb() {
     var bombCollision = false;

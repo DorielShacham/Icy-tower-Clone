@@ -1,12 +1,12 @@
 //---------------------------------------------------------------------
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
-
-const player = new Player();
+const username = localStorage.getItem("username");  //get the username from local storage
+const player = new Player(username!);
 const bomb = new Bomb(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
 const coin = new Coin(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
 
-const users: User[] = [];
+
 let bombs: Bomb[] = [];
 let coins: Coin[] = [];
 let floors: Floor[] = [];
@@ -21,12 +21,12 @@ let hasStartedMovingUp = false;
 let hasStartedMovingDown = false;
 
 // Function to move the canvas up
-// function moveCanvasUp() {
-//   if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
-//     // Start moving the canvas up only when the player's y position is less than half of the canvas height
-//     canvasOffsetY += 1;
-//   }
-// }
+function moveCanvasUp() {
+  if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
+    // Start moving the canvas up only when the player's y position is less than half of the canvas height
+    canvasOffsetY += 1;
+  }
+}
 
 //---------------------floors functions--------------------------------------
 
@@ -301,28 +301,28 @@ updateInterval = setInterval(update, 800 / 60);
 
 //------------render score---------
 //need to be FIX!!!!
-function renderScore() {
-  const html = document.querySelector("#score");
-  const users = localStorage.getItem("users");
-  try {
-    if (!html) throw new Error("no element");
-    html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
-  } catch (error) {
-    console.error(error);
-  }
-}
+// function renderScore() {
+//   const html = document.querySelector("#score");
+//   const users = localStorage.getItem("users");
+//   try {
+//     if (!html) throw new Error("no element");
+//     html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 
-function renderTableScore() {
-  try {
-    const scoreTable = document.querySelector("#scoreTable");
-    if (!scoreTable) throw new Error("no element");
+// function renderTableScore() {
+//   try {
+//     const scoreTable = document.querySelector("#scoreTable");
+//     if (!scoreTable) throw new Error("no element");
 
-    const htmlScoreTable = `<h2> </h2>`;
-  } catch (error) {
-    console.error(error);
-  }
+//     const htmlScoreTable = `<h2> </h2>`;
+//   } catch (error) {
+//     console.error(error);
+//   }
 
-}
+// }
 
 //------------------check collision-----------------------------
 function checkCollisionBomb() {
