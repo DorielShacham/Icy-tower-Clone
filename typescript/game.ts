@@ -42,19 +42,19 @@ class Player {
     this.y += this.velocityY;
     this.velocityY += 0.5;
 
-// Apply rotation only when the player is jumping or falling
- // Apply rotation only when the player is jumping
- if (this.isJumping) {
-  // Increase the rotation angle while jumping
-  this.rotation += 25; // Adjust the value as needed for the rotation speed
-  if (this.rotation >= 360) {
-    // Wrap the rotation angle around 360 degrees
-    this.rotation = 0;
-  }
-} else {
-  // If the player is not jumping, set the rotation angle to 0
-  this.rotation = 0;
-}
+    // Apply rotation only when the player is jumping or falling
+    // Apply rotation only when the player is jumping
+    if (this.isJumping) {
+      // Increase the rotation angle while jumping
+      this.rotation += 25; // Adjust the value as needed for the rotation speed
+      if (this.rotation >= 360) {
+        // Wrap the rotation angle around 360 degrees
+        this.rotation = 0;
+      }
+    } else {
+      // If the player is not jumping, set the rotation angle to 0
+      this.rotation = 0;
+    }
 
   }
 
@@ -73,7 +73,7 @@ class Floor {
   y: number;
   image: HTMLImageElement; // Add an image property to store the floor image
 
-  constructor(x: number, y: number, width: number, id: number , imageUrl: string) {
+  constructor(x: number, y: number, width: number, id: number, imageUrl: string) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -128,6 +128,9 @@ class Coin {
   width: number;
   height: number;
   image: any;
+  frameX: number;
+  speed: number;
+  speedFrame: number;
 
   constructor(x: number, y: number, width: number, idC: number) {
     this.x = Math.floor(Math.random() * 500);
@@ -136,37 +139,27 @@ class Coin {
     this.height = 30;
     this.idC = idC;   // Assign the ID to the coin 
     this.image = document.querySelector('#coin');
+    this.frameX = 0;
+    this.speedFrame = 0;
+    this.speed = 5;
   }
 
   drawCoin(ctx: CanvasRenderingContext2D) {
-    // ctx.beginPath();
-    // ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
-    // ctx.fillStyle = "gold";
-    // ctx.fill()
-    // ctx.strokeStyle = "gold";
-    // ctx.stroke();
-    ctx.drawImage(this.image, 0, 0, 220, 220, this.x, this.y, this.width, this.height)
     ctx.strokeRect(this.x, this.y, this.width, this.height)
+    this.animation()
   }
 
   //https://www.youtube.com/watch?v=CY0HE277IBM&ab_channel=Frankslaboratory
   animation() {
-
-  }
-}
-
-
-//-------------------------------------------------------
-function updateScore() {
-  try {
-    if ((this.player.x === bomb.x) && (this.player.y === bomb.y)) {
-      this.score -= 1;
+    const coinWidth = 170;
+    const coinHeight = 170;
+    ctx.clearRect(0, 0, this.width, this.height)
+    ctx.drawImage(this.image, this.frameX * coinWidth, 0 * coinHeight, coinWidth, coinHeight, this.x, this.y, this.width, this.height)
+    if (this.speedFrame % this.speed === 0) {
+      if (this.frameX < 6) this.frameX++
+      else this.frameX = 0
     }
-
-    if ((this.player.x === coin.x) && (this.player.y === coin.y)) {
-      this.score += 1;
-    }
-  } catch (error) {
-    console.error(error)
+    this.speedFrame++;
+    requestAnimationFrame(this.animation)
   }
 }
