@@ -13,8 +13,8 @@ var Player = /** @class */ (function () {
     function Player() {
         this.x = 600;
         this.y = canvas.height - 50; // Set the initial y position above the first floor
-        this.width = 110;
-        this.height = 110;
+        this.width = 50;
+        this.height = 50;
         this.velocityY = -10;
         this.isJumping = false;
         this.rotation = 0; // Set the initial rotation angle to 0 degrees
