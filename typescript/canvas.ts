@@ -6,7 +6,7 @@ const player = new Player();
 const bomb = new Bomb(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
 const coin = new Coin(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
 
-const users: User[] = [];
+//const users: User[] = [];
 let bombs: Bomb[] = [];
 let coins: Coin[] = [];
 let floors: Floor[] = [];
