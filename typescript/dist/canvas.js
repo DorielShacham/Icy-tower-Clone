@@ -58,10 +58,7 @@ function generateBomb() {
     }
 }
 function removeBombs() {
-    bombs = bombs.filter(function (bomb) {
-        return (bomb.y + bomb.height < 690);
-    });
-    ; // Remove bombs beneath the canvas
+    bombs = bombs.filter(function (bomb) { return (bomb.y + bomb.height < 690); }); // Remove bombs beneath the canvas
 }
 //---------------coin function---------
 //generate the coins
@@ -211,12 +208,7 @@ function update() {
             // If the player is moving up and reaches a certain point, generate new floors
             generateFloor();
         }
-        // if (bombs.length === 0 || bombs[bombs.length - 1].y > 150) {
         generateBomb();
-        // } else if (player.y + player.height < canvas.height / 2) {
-        // If the player is moving up and reaches a certain point, generate new bombs
-        //  generateBomb();
-        // }
         removeBombs();
         checkCollisionBomb();
         if (player.y >= canvas.height) {
@@ -286,23 +278,11 @@ function renderTableScore() {
 function checkCollisionBomb() {
     var bombCollision = false;
     var targetBombId = null; // Keep track of the ID of the target floor
-    // Check collision with the first bomb separately
-    // const firstBomb = bombs[0];
-    // if (
-    //   player.x < firstBomb.x + firstBomb.width &&
-    //   player.x + player.width > firstBomb.x &&
-    //   player.y + player.height > firstBomb.y
-    // ) {
-    //   bombCollision = true;
-    //   console.log(`collosion bomb`)
-    //   targetBombId = firstBomb.idB; // Save the ID of the first floor
-    // } else {
-    //   // Check collision with other floors
     for (var _i = 0, bombs_2 = bombs; _i < bombs_2.length; _i++) {
         var bomb_2 = bombs_2[_i];
-        if (player.x < bomb_2.x + bomb_2.width &&
-            player.x + player.width > bomb_2.x &&
-            player.y + player.height > bomb_2.y) {
+        if (bomb_2.x < player.x + player.width &&
+            bomb_2.x + bomb_2.width > player.x &&
+            bomb_2.y + bomb_2.height > player.y) {
             bombCollision = true;
             console.log("collosion bomb");
             targetBombId = bomb_2.idB; // Save the ID of the target floor
