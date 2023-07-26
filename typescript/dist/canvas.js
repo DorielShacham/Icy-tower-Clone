@@ -65,14 +65,14 @@ function removeBombs() {
 function generateCoin() {
     var width = 30;
     var x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "coin" element
-    var y = player.y - 100; // determine the vertical position of the new "coin" element above the player's position  
-    if (coins.length < 5) {
-        coins.push(new Coin(x, y, width, lastBombId));
+    var y = player.y - 20; // determine the vertical position of the new "coin" element above the player's position  
+    if (coins.length < 15) {
+        coins.push(new Coin(x, y, width, lastCoinId));
         lastBombId++;
     }
 }
 function removeCoins() {
-    coins = coins.filter(function (coin) { return coin.y + bomb.height > -canvasOffsetY; }); // Remove coins above the canvas
+    coins = coins.filter(function (coin) { return coin.y + bomb.height < 690; }); // Remove coins beneath the canvas
 }
 //------- gameover popup----------------------------
 var gameOver = false;
@@ -286,6 +286,8 @@ function checkCollisionBomb() {
             bombCollision = true;
             console.log("collosion bomb");
             targetBombId = bomb_2.idB; // Save the ID of the target floor
+            conso;
+            bombs = bombs.filter(function (bomb) { return (bomb.IdB === targetBombId); }); // Remove the bomb that hit 
             return bombCollision;
         }
     }
