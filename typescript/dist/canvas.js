@@ -59,9 +59,9 @@ function generateBomb() {
 }
 function removeBombs() {
     bombs = bombs.filter(function (bomb) {
-        return (bomb.y + bomb.height < -700) || (bomb.y + bomb.height > 0) ||
-            (bomb.x + bomb.width > 700) || (bomb.x + bomb.width < 0);
-    }); // Remove bombs beneath the canvas
+        return (bomb.y + bomb.height < 690);
+    });
+    ; // Remove bombs beneath the canvas
 }
 //---------------coin function---------
 //generate the coins
@@ -234,8 +234,6 @@ function draw() {
     ctx.translate(0, canvasOffsetY); // creating the effect of the player and other objects moving up in the game world
     // Draw player & floors & bomb & coins
     player.draw(ctx);
-    bomb.drawBomb(ctx);
-    //coin.drawCoin(ctx);
     coin.animation(ctx);
     for (var _i = 0, floors_2 = floors; _i < floors_2.length; _i++) {
         var floor = floors_2[_i];
@@ -245,6 +243,9 @@ function draw() {
         var bomb_1 = bombs_1[_a];
         bomb_1.drawBomb(ctx);
         bomb_1.newPos();
+    }
+    for (var _b = 0, coins_1 = coins; _b < coins_1.length; _b++) {
+        var coin_1 = coins_1[_b];
     }
     // Reset the canvas transformation
     ctx.setTransform(1, 0, 0, 1, 0, 0); //resets the canvas transformation, undoing the previous vertical offset applied

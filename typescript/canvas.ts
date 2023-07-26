@@ -79,8 +79,7 @@ function generateBomb() {
 function removeBombs() {
 
   bombs = bombs.filter((bomb) => 
-  (bomb.y + bomb.height < -700) || (bomb.y + bomb.height > 0) ||
-  (bomb.x + bomb.width > 700) || (bomb.x + bomb.width < 0)
+  (bomb.y + bomb.height < 690))
   ); // Remove bombs beneath the canvas
 }
 
@@ -275,8 +274,6 @@ function draw() {
 
   // Draw player & floors & bomb & coins
   player.draw(ctx);
-  bomb.drawBomb(ctx);
-  //coin.drawCoin(ctx);
   coin.animation(ctx)
   
    for (const floor of floors) {
@@ -286,6 +283,10 @@ function draw() {
   for (const bomb of bombs) {
     bomb.drawBomb(ctx);
     bomb.newPos();
+  }
+
+  for (const coin of coins){
+    
   }
 
   // Reset the canvas transformation
