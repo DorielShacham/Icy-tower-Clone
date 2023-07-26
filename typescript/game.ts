@@ -129,6 +129,8 @@ class Coin {
   height: number;
   image: any;
   frameX: number;
+  speed: number;
+  speedFrame: number;
 
   constructor(x: number, y: number, width: number, idC: number) {
     this.x = Math.floor(Math.random() * 500);
@@ -138,6 +140,8 @@ class Coin {
     this.idC = idC;   // Assign the ID to the coin 
     this.image = document.querySelector('#coin');
     this.frameX = 0;
+    this.speedFrame = 0;
+    this.speed = 5;
   }
 
   drawCoin(ctx: CanvasRenderingContext2D) {
@@ -160,10 +164,12 @@ class Coin {
     const coinWidth = 170;
     const coinHeight = 170;
     ctx.clearRect(0, 0, this.width, this.height)
-    let frameX: number ;
     ctx.drawImage(this.image, this.frameX * coinWidth, 0 * coinHeight, coinWidth, coinHeight, this.x, this.y, this.width, this.height)
-    if (this.frameX < 6) this.frameX++
-    else this.frameX = 0
+    if (this.speedFrame % this.speed === 0) {
+      if (this.frameX < 6) this.frameX++
+      else this.frameX = 0
+    }
+    this.speedFrame++;
     requestAnimationFrame(this.animation)
   }
 }

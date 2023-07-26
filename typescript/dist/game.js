@@ -100,6 +100,8 @@ var Coin = /** @class */ (function () {
         this.idC = idC; // Assign the ID to the coin 
         this.image = document.querySelector('#coin');
         this.frameX = 0;
+        this.speedFrame = 0;
+        this.speed = 5;
     }
     Coin.prototype.drawCoin = function (ctx) {
         // ctx.beginPath();
@@ -120,12 +122,14 @@ var Coin = /** @class */ (function () {
         var coinWidth = 170;
         var coinHeight = 170;
         ctx.clearRect(0, 0, this.width, this.height);
-        var frameX;
         ctx.drawImage(this.image, this.frameX * coinWidth, 0 * coinHeight, coinWidth, coinHeight, this.x, this.y, this.width, this.height);
-        if (this.frameX < 6)
-            this.frameX++;
-        else
-            this.frameX = 0;
+        if (this.speedFrame % this.speed === 0) {
+            if (this.frameX < 6)
+                this.frameX++;
+            else
+                this.frameX = 0;
+        }
+        this.speedFrame++;
         requestAnimationFrame(this.animation);
     };
     return Coin;
