@@ -59,12 +59,9 @@ class Player {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-     // Draw the player image with rotation
-     ctx.save(); // Save the current context state to restore it later
-     ctx.translate(this.x + this.width / 2, this.y + this.height / 2); // Translate to the center of the player
-     ctx.rotate((this.rotation * Math.PI) / 180); // Apply rotation
-     ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height); // Draw the player
-     ctx.restore(); // Restore the saved context state
+    ctx.fillStyle = "blue";
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.strokeRect(this.x, this.y, this.width, this.height)
   }
 }
 
@@ -100,22 +97,28 @@ class Bomb {
   y: number;
   width: number;
   height: number;
+  image: any;
 
-  constructor(x:number, y:number, width:number, idB: number) {
-    this.x = Math.floor(Math.random()*1000); //random position on x
-    this.y = Math.floor(Math.random()*1000); //random position on y
-    this.width = 30;
-    this.height = 30;
+  constructor(x: number, y: number, width: number, idB: number) {
+    this.x = Math.floor(Math.random() * 1000); //random position on x
+    this.y = Math.floor(Math.random() * 1000); //random position on y
+    this.width = 40;
+    this.height = 40;
     this.idB = idB; // Assign the ID to the bomb
+    this.image = document.querySelector('#bomb')
   }
 
   drawBomb(ctx: CanvasRenderingContext2D) {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
-      ctx.stroke();
-      ctx.strokeStyle = "red";
-      ctx.fillStyle = "black";
-    }
+    // ctx.beginPath();
+    // ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
+    // ctx.fillStyle = "black";
+    // ctx.fill()
+    // ctx.strokeStyle = "black";
+    // ctx.stroke();
+    ctx.strokeRect(this.x, this.y, this.width, this.height)
+    ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+  }
+
 }
 
 class Coin {
@@ -124,22 +127,34 @@ class Coin {
   y: number;
   width: number;
   height: number;
+  image: any;
 
-  constructor(x:number, y:number, width:number, idC:number) {
-    this.x = Math.floor(Math.random()*500);
-    this.y = Math.floor(Math.random()*500);
+  constructor(x: number, y: number, width: number, idC: number) {
+    this.x = Math.floor(Math.random() * 500);
+    this.y = Math.floor(Math.random() * 500);
     this.width = 30;
     this.height = 30;
-    this.idC = idC;   // Assign the ID to the coin   
+    this.idC = idC;   // Assign the ID to the coin 
+    this.image = document.querySelector('#coin');
   }
 
   drawCoin(ctx: CanvasRenderingContext2D) {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
-      ctx.stroke();
-      ctx.strokeStyle = "gold";
-    }
+    // ctx.beginPath();
+    // ctx.arc(this.x, this.y, 10, 0, 2*Math.PI);
+    // ctx.fillStyle = "gold";
+    // ctx.fill()
+    // ctx.strokeStyle = "gold";
+    // ctx.stroke();
+    ctx.drawImage(this.image, 0, 0, 220, 220, this.x, this.y, this.width, this.height)
+    ctx.strokeRect(this.x, this.y, this.width, this.height)
+  }
+
+  //https://www.youtube.com/watch?v=CY0HE277IBM&ab_channel=Frankslaboratory
+  animation() {
+
+  }
 }
+
 
 //-------------------------------------------------------
 function updateScore() {

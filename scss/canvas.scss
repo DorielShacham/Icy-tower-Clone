@@ -34,7 +34,8 @@
     font-size: 20px;
     margin: 4px 2px;
     cursor: pointer;
-    border-radius: 20px;
-    font-family: 'Lumanosimo', cursive;
-    font-weight: bolder;
+  }
+
+  #bomb, #coin {
+    display: none;
   }
