@@ -98,6 +98,7 @@ class Bomb {
   width: number;
   height: number;
   image: any;
+  bSpeed: number;
 
   constructor(x: number, y: number, width: number, idB: number) {
     this.x = Math.floor(Math.random() * 1000); //random position on x
@@ -106,6 +107,7 @@ class Bomb {
     this.height = 40;
     this.idB = idB; // Assign the ID to the bomb
     this.image = document.querySelector('#bomb')
+    this.bSpeed = 5 + this.y
   }
 
   drawBomb(ctx: CanvasRenderingContext2D) {
@@ -145,21 +147,21 @@ class Coin {
   }
 
   drawCoin(ctx: CanvasRenderingContext2D) {
-    ctx.strokeRect(this.x, this.y, this.width, this.height)
-    this.animation()
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
+    this.animation.bind(this)(ctx); // Bind the function to the current instance
   }
 
-  //https://www.youtube.com/watch?v=CY0HE277IBM&ab_channel=Frankslaboratory
-  animation() {
+  animation(ctx: CanvasRenderingContext2D) {
     const coinWidth = 170;
     const coinHeight = 170;
-    ctx.clearRect(0, 0, this.width, this.height)
-    ctx.drawImage(this.image, this.frameX * coinWidth, 0 * coinHeight, coinWidth, coinHeight, this.x, this.y, this.width, this.height)
+    ctx.clearRect(0, 0, this.width, this.height);
+    ctx.drawImage(this.image,this.frameX * coinWidth, 0 * coinHeight, coinWidth, coinHeight,
+      this.x, this.y, this.width, this.height);
     if (this.speedFrame % this.speed === 0) {
-      if (this.frameX < 6) this.frameX++
-      else this.frameX = 0
+      if (this.frameX < 6) this.frameX++;
+      else this.frameX = 0;
     }
     this.speedFrame++;
-    requestAnimationFrame(this.animation)
+    requestAnimationFrame(() => this.animation(ctx)); // Use an arrow function to preserve the this context
   }
 }

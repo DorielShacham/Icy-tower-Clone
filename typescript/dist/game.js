@@ -78,6 +78,7 @@ var Bomb = /** @class */ (function () {
         this.height = 40;
         this.idB = idB; // Assign the ID to the bomb
         this.image = document.querySelector('#bomb');
+        this.bSpeed = 5 + this.y;
     }
     Bomb.prototype.drawBomb = function (ctx) {
         // ctx.beginPath();
@@ -105,10 +106,10 @@ var Coin = /** @class */ (function () {
     }
     Coin.prototype.drawCoin = function (ctx) {
         ctx.strokeRect(this.x, this.y, this.width, this.height);
-        this.animation();
+        this.animation.bind(this)(ctx); // Bind the function to the current instance
     };
-    //https://www.youtube.com/watch?v=CY0HE277IBM&ab_channel=Frankslaboratory
-    Coin.prototype.animation = function () {
+    Coin.prototype.animation = function (ctx) {
+        var _this = this;
         var coinWidth = 170;
         var coinHeight = 170;
         ctx.clearRect(0, 0, this.width, this.height);
@@ -120,7 +121,7 @@ var Coin = /** @class */ (function () {
                 this.frameX = 0;
         }
         this.speedFrame++;
-        requestAnimationFrame(this.animation);
+        requestAnimationFrame(function () { return _this.animation(ctx); }); // Use an arrow function to preserve the this context
     };
     return Coin;
 }());
