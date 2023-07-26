@@ -16,12 +16,12 @@ var canvasOffsetY = 0;
 var hasStartedMovingUp = false;
 var hasStartedMovingDown = false;
 // Function to move the canvas up
-function moveCanvasUp() {
-    if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
-        // Start moving the canvas up only when the player's y position is less than half of the canvas height
-        canvasOffsetY += 1;
-    }
-}
+// function moveCanvasUp() {
+//   if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
+//     // Start moving the canvas up only when the player's y position is less than half of the canvas height
+//     canvasOffsetY += 1;
+//   }
+// }
 //---------------------floors functions--------------------------------------
 var floorImageUrl = "../../images/stick.png";
 //generate the floors
@@ -211,13 +211,12 @@ function update() {
             // If the player is moving up and reaches a certain point, generate new floors
             generateFloor();
         }
-        if (bombs.length === 0 || bombs[bombs.length - 1].y > 150) {
-            generateBomb();
-        }
-        else if (player.y + player.height < canvas.height / 2) {
-            // If the player is moving up and reaches a certain point, generate new bombs
-            generateBomb();
-        }
+        // if (bombs.length === 0 || bombs[bombs.length - 1].y > 150) {
+        generateBomb();
+        // } else if (player.y + player.height < canvas.height / 2) {
+        // If the player is moving up and reaches a certain point, generate new bombs
+        //  generateBomb();
+        // }
         removeBombs();
         checkCollisionBomb();
         if (player.y >= canvas.height) {
@@ -240,6 +239,10 @@ function draw() {
     for (var _i = 0, floors_2 = floors; _i < floors_2.length; _i++) {
         var floor = floors_2[_i];
         floor.draw(ctx);
+    }
+    for (var _a = 0, bombs_1 = bombs; _a < bombs_1.length; _a++) {
+        var bomb_1 = bombs_1[_a];
+        bomb_1.drawBomb(ctx);
     }
     // Reset the canvas transformation
     ctx.setTransform(1, 0, 0, 1, 0, 0); //resets the canvas transformation, undoing the previous vertical offset applied
@@ -292,14 +295,14 @@ function checkCollisionBomb() {
     //   targetBombId = firstBomb.idB; // Save the ID of the first floor
     // } else {
     //   // Check collision with other floors
-    for (var _i = 0, bombs_1 = bombs; _i < bombs_1.length; _i++) {
-        var bomb_1 = bombs_1[_i];
-        if (player.x < bomb_1.x + bomb_1.width &&
-            player.x + player.width > bomb_1.x &&
-            player.y + player.height > bomb_1.y) {
+    for (var _i = 0, bombs_2 = bombs; _i < bombs_2.length; _i++) {
+        var bomb_2 = bombs_2[_i];
+        if (player.x < bomb_2.x + bomb_2.width &&
+            player.x + player.width > bomb_2.x &&
+            player.y + player.height > bomb_2.y) {
             bombCollision = true;
             console.log("collosion bomb");
-            targetBombId = bomb_1.idB; // Save the ID of the target floor
+            targetBombId = bomb_2.idB; // Save the ID of the target floor
             return bombCollision;
         }
     }

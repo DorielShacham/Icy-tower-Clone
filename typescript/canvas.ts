@@ -21,12 +21,12 @@ let hasStartedMovingUp = false;
 let hasStartedMovingDown = false;
 
 // Function to move the canvas up
-function moveCanvasUp() {
-  if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
-    // Start moving the canvas up only when the player's y position is less than half of the canvas height
-    canvasOffsetY += 1;
-  }
-}
+// function moveCanvasUp() {
+//   if (!hasStartedMovingUp && player.y + player.height < canvas.height / 2) {
+//     // Start moving the canvas up only when the player's y position is less than half of the canvas height
+//     canvasOffsetY += 1;
+//   }
+// }
 
 //---------------------floors functions--------------------------------------
 
@@ -66,7 +66,7 @@ function removeFloors() {
 function generateBomb() {
   const width = 30;
 
-  const x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "bomb" element
+  const x = Math.floor(Math.random()*(canvas.width - width)); //determine the horizontal position of the new "bomb" element
   const y = canvas.height - 20; // determine the vertical position of the new "bomb" element above the player's position  
 
   if (bombs.length < 5) {
@@ -248,12 +248,12 @@ function update() {
       generateFloor();
     }
 
-    if (bombs.length === 0 || bombs[bombs.length - 1].y > 150) {
+   // if (bombs.length === 0 || bombs[bombs.length - 1].y > 150) {
       generateBomb();
-    } else if (player.y + player.height < canvas.height / 2) {
+   // } else if (player.y + player.height < canvas.height / 2) {
       // If the player is moving up and reaches a certain point, generate new bombs
-      generateBomb();
-    }
+    //  generateBomb();
+   // }
 
     removeBombs();
     checkCollisionBomb()
@@ -280,6 +280,10 @@ function draw() {
 
    for (const floor of floors) {
     floor.draw(ctx);
+  }
+
+  for (const bomb of bombs) {
+    bomb.drawBomb(ctx);
   }
 
   // Reset the canvas transformation
