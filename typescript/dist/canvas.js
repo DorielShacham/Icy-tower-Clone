@@ -128,7 +128,7 @@ var updateInterval;
 function update() {
     //This function is responsible for updating the game state, handling collisions, and generating new floors and bombs.
     if (!gameOver) {
-        moveCanvasUp();
+        //moveCanvasUp();
         if (isLeftKeyPressed) {
             player.x -= 5;
         }
@@ -235,7 +235,8 @@ function draw() {
     // Draw player & floors & bomb & coins
     player.draw(ctx);
     bomb.drawBomb(ctx);
-    coin.drawCoin(ctx);
+    //coin.drawCoin(ctx);
+    coin.animation(ctx);
     for (var _i = 0, floors_2 = floors; _i < floors_2.length; _i++) {
         var floor = floors_2[_i];
         floor.draw(ctx);
@@ -243,6 +244,7 @@ function draw() {
     for (var _a = 0, bombs_1 = bombs; _a < bombs_1.length; _a++) {
         var bomb_1 = bombs_1[_a];
         bomb_1.drawBomb(ctx);
+        bomb_1.newPos();
     }
     // Reset the canvas transformation
     ctx.setTransform(1, 0, 0, 1, 0, 0); //resets the canvas transformation, undoing the previous vertical offset applied

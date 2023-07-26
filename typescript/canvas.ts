@@ -156,7 +156,7 @@ let updateInterval: number;
 function update() {
   //This function is responsible for updating the game state, handling collisions, and generating new floors and bombs.
   if (!gameOver) {
-    moveCanvasUp();
+    //moveCanvasUp();
 
     if (isLeftKeyPressed) {
       player.x -= 5;
@@ -276,14 +276,16 @@ function draw() {
   // Draw player & floors & bomb & coins
   player.draw(ctx);
   bomb.drawBomb(ctx);
-  coin.drawCoin(ctx);
-
+  //coin.drawCoin(ctx);
+  coin.animation(ctx)
+  
    for (const floor of floors) {
     floor.draw(ctx);
   }
 
   for (const bomb of bombs) {
     bomb.drawBomb(ctx);
+    bomb.newPos();
   }
 
   // Reset the canvas transformation
