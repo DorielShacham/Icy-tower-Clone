@@ -3,18 +3,8 @@ const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 
 const player = new Player();
-const bomb = new Bomb(
-  Math.floor(Math.random() * 500),
-  Math.floor(Math.random() * 500),
-  30,
-  0
-);
-const coin = new Coin(
-  Math.floor(Math.random() * 500),
-  Math.floor(Math.random() * 500),
-  30,
-  0
-);
+const bomb = new Bomb(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
+const coin = new Coin(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
 
 const users: User[] = [];
 let bombs: Bomb[] = [];
@@ -87,7 +77,7 @@ function generateBomb() {
 }
 
 function removeBombs() {
-  
+
   bombs = bombs.filter((bomb) => bomb.y + bomb.height > -canvasOffsetY); // Remove bombs  the canvas
 }
 
@@ -284,7 +274,7 @@ function draw() {
   player.draw(ctx);
   bomb.drawBomb(ctx);
   coin.drawCoin(ctx);
-
+  //coin.animation()
   for (const floor of floors) {
     floor.draw(ctx);
   }

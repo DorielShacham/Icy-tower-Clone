@@ -230,10 +230,11 @@ generateFloor();
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.translate(0, canvasOffsetY); // creating the effect of the player and other objects moving up in the game world
-    // Draw player & bomb & coins
+    // Draw player & floors & bomb & coins
     player.draw(ctx);
     bomb.drawBomb(ctx);
     coin.drawCoin(ctx);
+    //coin.animation()
     for (var _i = 0, floors_2 = floors; _i < floors_2.length; _i++) {
         var floor = floors_2[_i];
         floor.draw(ctx);
@@ -288,14 +289,14 @@ function checkCollisionBomb() {
     }
     else {
         // Check collision with other floors
-        for (var _i = 0, bombs_2 = bombs; _i < bombs_2.length; _i++) {
-            var bomb_2 = bombs_2[_i];
-            if (player.x < bomb_2.x + bomb_2.width &&
-                player.x + player.width > bomb_2.x &&
-                player.y + player.height > bomb_2.y) {
+        for (var _i = 0, bombs_1 = bombs; _i < bombs_1.length; _i++) {
+            var bomb_1 = bombs_1[_i];
+            if (player.x < bomb_1.x + bomb_1.width &&
+                player.x + player.width > bomb_1.x &&
+                player.y + player.height > bomb_1.y) {
                 bombCollision = true;
                 console.log("collosion bomb");
-                targetBombId = bomb_2.idB; // Save the ID of the target floor
+                targetBombId = bomb_1.idB; // Save the ID of the target floor
                 break;
             }
         }
