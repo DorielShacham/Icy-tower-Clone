@@ -201,6 +201,10 @@ function update() {
             // If the player is moving up and reaches a certain point, generate new floors
             generateFloor();
         }
+        if (player.y + player.height < canvas.height / 2) {
+            bomb.speedY = 1;
+            coin.speedY = 1;
+        }
         generateBomb();
         removeBombs();
         checkCollisionBomb();

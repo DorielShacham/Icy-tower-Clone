@@ -3,8 +3,8 @@ const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 
 const player = new Player();
-const bomb = new Bomb(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
-const coin = new Coin(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
+const bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+const coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 
 //const users: User[] = [];
 let bombs: Bomb[] = [];
@@ -58,7 +58,7 @@ function removeFloors() {
 function generateBomb() {
   const width = 30;
 
-  const x = Math.floor(Math.random()*(canvas.width - width)); //determine the horizontal position of the new "bomb" element
+  const x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "bomb" element
   const y = canvas.height - 20; // determine the vertical position of the new "bomb" element above the player's position  
 
   if (bombs.length < 5) {
@@ -236,6 +236,10 @@ function update() {
       generateFloor();
     }
 
+    if (player.y + player.height < canvas.height / 2) {
+      bomb.speedY = 1
+      coin.speedY = 1
+    }
     generateBomb();
     removeBombs();
     checkCollisionBomb()
@@ -262,7 +266,7 @@ function draw() {
   // Draw player & floors & bomb & coins
   player.draw(ctx);
 
-   for (const floor of floors) {
+  for (const floor of floors) {
     floor.draw(ctx);
   }
 
@@ -271,7 +275,7 @@ function draw() {
     bomb.newPos();
   }
 
-  for (const coin of coins){
+  for (const coin of coins) {
     coin.animation(ctx);
     coin.newPos()
   }
@@ -319,40 +323,40 @@ function checkCollisionBomb() {
   let bombCollision = false;
   let targetBombId: number | null = null; // Keep track of the ID of the target floor
 
-    for (const bomb of bombs) {
-      if (
-        bomb.x < player.x + player.width &&
-        bomb.x + bomb.width > player.x &&
-        bomb.y + bomb.height > player.y
-      ) {
-        bombCollision = true;
-        console.log(`collosion bomb`)
-        targetBombId = bomb.idB; // Save the ID of the target bomb
-        console.log(`targetBombId:`, targetBombId)
-        bombs = bombs.filter((bomb) => (bomb.idB !== targetBombId)); // Remove the bomb that hit 
+  for (const bomb of bombs) {
+    if (
+      bomb.x < player.x + player.width &&
+      bomb.x + bomb.width > player.x &&
+      bomb.y + bomb.height > player.y
+    ) {
+      bombCollision = true;
+      console.log(`collosion bomb`)
+      targetBombId = bomb.idB; // Save the ID of the target bomb
+      console.log(`targetBombId:`, targetBombId)
+      bombs = bombs.filter((bomb) => (bomb.idB !== targetBombId)); // Remove the bomb that hit 
 
-        return bombCollision;
-      }
+      return bombCollision;
     }
   }
+}
 
-function checkCollisionCoin(){
+function checkCollisionCoin() {
   let coinCollision = false;
   let targetCoinId: number | null = null; // Keep track of the ID of the target floor
 
-    for (const coin of coins) {
-      if (
-        coin.x < player.x + player.width &&
-        coin.x + coin.width > player.x &&
-        coin.y + coin.height > player.y
-      ) {
-        coinCollision = true;
-        console.log(`collosion coin`)
-        targetCoinId = coin.idC; // Save the ID of the target coin
-        console.log(`targetCoinId:`, targetCoinId)
-        coins = coins.filter((coin) => (coin.idC !== targetCoinId)); // Remove the bomb that hit 
+  for (const coin of coins) {
+    if (
+      coin.x < player.x + player.width &&
+      coin.x + coin.width > player.x &&
+      coin.y + coin.height > player.y
+    ) {
+      coinCollision = true;
+      console.log(`collosion coin`)
+      targetCoinId = coin.idC; // Save the ID of the target coin
+      console.log(`targetCoinId:`, targetCoinId)
+      coins = coins.filter((coin) => (coin.idC !== targetCoinId)); // Remove the bomb that hit 
 
-        return coinCollision;
-      }
+      return coinCollision;
     }
+  }
 }
