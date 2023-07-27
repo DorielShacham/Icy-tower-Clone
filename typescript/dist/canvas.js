@@ -107,6 +107,7 @@ function onKeyUp(event) {
 function onKeyPress(event) {
     if (event.key === " ") {
         player.jump();
+        hasStartedJumping = true; // Start the game when the player presses the jump key
     }
 }
 //--
