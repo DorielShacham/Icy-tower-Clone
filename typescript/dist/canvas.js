@@ -17,7 +17,7 @@ var hasStartedMovingUp = false;
 var hasStartedMovingDown = false;
 //---------------------floors functions--------------------------------------
 var floorImageUrl = "../../images/stick.png";
-//generate the floors
+// Generate the floors
 function generateFloor() {
     var minGap = 100;
     var maxGap = 200;
@@ -116,8 +116,9 @@ document.addEventListener("keypress", onKeyPress);
 //---------------------------------------------------------------------
 //update frames
 var updateInterval;
+var hasStartedJumping = false; // Flag to track if the player has started jumping
+// Update function
 function update() {
-    //This function is responsible for updating the game state, handling collisions, and generating new floors and bombs.
     if (!gameOver) {
         if (isLeftKeyPressed) {
             player.x -= 2;
@@ -125,9 +126,12 @@ function update() {
         else if (isRightKeyPressed) {
             player.x += 2;
         }
+        if (player.y < canvas.height / 2) {
+            canvasOffsetY = canvas.height / 2 - player.y;
+        }
         player.update();
         var floorCollision = false;
-        var targetFloorId_1 = null; // Keep track of the ID of the target floor
+        var targetFloorId_1 = null;
         if (floors.length > 0) {
             var firstFloor = floors[0];
             if (player.x < firstFloor.x + firstFloor.width &&
@@ -144,61 +148,52 @@ function update() {
                 }
             }
             else {
-                // Check collision with other floors
                 for (var _i = 0, floors_1 = floors; _i < floors_1.length; _i++) {
                     var floor = floors_1[_i];
-                    if (player.y + player.height > floor.y && // Check if the player's bottom edge is below the floor's top edge
-                        player.y < floor.y + floor.height && // Check if the player's top edge is above the floor's bottom edge
-                        player.x < floor.x + floor.width && // Check if the player's right edge is to the left of the floor's right edge
-                        player.x + player.width > floor.x // Check if the player's left edge is to the right of the floor's left edge
-                    ) {
+                    if (player.y + player.height > floor.y &&
+                        player.y < floor.y + floor.height &&
+                        player.x < floor.x + floor.width &&
+                        player.x + player.width > floor.x) {
                         floorCollision = true;
-                        targetFloorId_1 = floor.id; // Save the ID of the target floor
+                        targetFloorId_1 = floor.id;
                         break;
                     }
                 }
             }
         }
-        // Apply automatic jump only if the player is not currently jumping or is falling
         if (targetFloorId_1 !== null && (player.isJumping || player.velocityY >= 0)) {
-            // Check if the player's y position is close to the target floor's y position
-            if (floors[targetFloorId_1].y !== undefined &&
-                Math.abs(player.y + player.height - floors[targetFloorId_1].y) <= 5) {
-                player.y = floors[targetFloorId_1].y - player.height;
+            var targetFloor = floors.find(function (floor) { return floor.id === targetFloorId_1; });
+            if (targetFloor && targetFloor.y !== undefined && Math.abs(player.y + player.height - targetFloor.y) <= 5) {
+                player.y = targetFloor.y - player.height;
                 player.velocityY = 0;
                 player.isJumping = false;
-                player.rotation = 0; // Reset rotation when landing on a floor
+                player.rotation = 0;
             }
             else {
-                // Gradually adjust player's y position to simulate smooth climbing
                 player.y += player.velocityY;
             }
         }
-        // Adjust player position if falling off the floor due to rotation
         if (floorCollision && player.rotation !== 0) {
             var targetFloor = floors.find(function (floor) { return floor.id === targetFloorId_1; });
             if (targetFloor) {
-                // Check if the player's x position is within the bounds of the target floor
                 if (player.x + player.width >= targetFloor.x &&
                     player.x <= targetFloor.x + targetFloor.width) {
                     player.y = targetFloor.y - player.height;
                     player.velocityY = 0;
                     player.isJumping = false;
-                    player.rotation = 0; // Reset rotation when colliding with a floor
+                    player.rotation = 0;
                 }
             }
         }
-        // Reset isJumping to false if the player is on the floor or falling
         if (floorCollision || player.velocityY > 0) {
             player.isJumping = false;
-            player.rotation = 0; // Reset rotation when on the floor or falling
+            player.rotation = 0;
         }
         removeFloors();
         if (floors.length === 0 || floors[floors.length - 1].y > 100) {
             generateFloor();
         }
         else if (player.y + player.height < canvas.height / 2) {
-            // If the player is moving up and reaches a certain point, generate new floors
             generateFloor();
         }
         if (player.y + player.height < canvas.height / 2) {
@@ -211,13 +206,16 @@ function update() {
         generateCoin();
         removeCoins();
         checkCollisionCoin();
+        console.log(player.y);
         if (player.y >= canvas.height) {
             gameOver = true;
             showGameOverPopup();
-            clearInterval(updateInterval); // Stop the update loop when the game is over
+            clearInterval(updateInterval);
         }
     }
 }
+// Update loop
+updateInterval = setInterval(update, 800 / 60);
 generateFloor();
 //--
 //draw frames
