@@ -249,13 +249,8 @@ function update() {
 
     generateBomb();
     removeBombs();
-    const isBomb=checkCollisionBomb();
-    //if the player touch the bomb the score will be -10
-    if(isBomb){ 
-      player.score-=10;
-      console.log(`score: ${player.score}`)
-    }
-
+    checkCollisionBomb();
+   
     if (player.y >= canvas.height) {
       gameOver = true;
       games.push(player);
