@@ -2,7 +2,7 @@
 
 class User {
   constructor(public userName: string, public score: number = 0, public player: Player) {
-    updateScore();
+    //updateScore();
   }
 }
 
@@ -73,6 +73,9 @@ class Floor {
   y: number;
   image: HTMLImageElement; // Add an image property to store the floor image
 
+  newPos: Function;
+  speedY: number;
+
   constructor(x: number, y: number, width: number, id: number, imageUrl: string) {
     this.x = x;
     this.y = y;
@@ -83,6 +86,11 @@ class Floor {
     // Load the image for the floor
     this.image = new Image();
     this.image.src = imageUrl;
+
+    this.speedY = 1;
+    this.newPos = function () {
+      this.y += this.speedY;
+    }
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -100,7 +108,6 @@ class Bomb {
   image: any;
 
   newPos: Function;
-  speedX: number;
   speedY: number;
 
   constructor(x: number, y: number , width: number, idB: number) {
@@ -111,7 +118,7 @@ class Bomb {
     this.idB = idB; // Assign the ID to the bomb
     this.image = document.querySelector('#bomb')
 
-    this.speedY = 0;
+    this.speedY = 1;
     this.newPos = function () {
       this.y += this.speedY;
     }
@@ -136,7 +143,6 @@ class Coin {
   speedFrame: number;
 
   newPos: Function;
-  speedX: number;
   speedY: number;
 
   constructor(x: number , y: number , width: number , idC: number) {
@@ -150,7 +156,7 @@ class Coin {
     this.speedFrame = 0;
     this.speed = 5;
 
-    this.speedY = 0;
+    this.speedY = 1;
     this.newPos = function () {
       this.y += this.speedY;
     }

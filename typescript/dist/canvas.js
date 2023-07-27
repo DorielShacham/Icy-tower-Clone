@@ -41,7 +41,7 @@ function removeFloors() {
 //-----------------------bomb function----------------------------
 //generate the bombs
 function generateBomb() {
-    var width = 30;
+    var width = 50;
     var x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "bomb" element
     var y = canvas.height - 20; // determine the vertical position of the new "bomb" element above the player's position  
     if (bombs.length < 5) {
@@ -59,7 +59,7 @@ function generateCoin() {
     var width = 30;
     var x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "coin" element
     var y = player.y - 20; // determine the vertical position of the new "coin" element above the player's position  
-    if (coins.length < 5) {
+    if (coins.length < 10) {
         coins.push(new Coin(x, y, width, lastCoinId));
         console.log(coins);
         lastCoinId++;
@@ -131,7 +131,7 @@ function update() {
         }
         player.update();
         var floorCollision = false;
-        var targetFloorId_1 = null;
+        var targetFloorId_1 = 0;
         if (floors.length > 0) {
             var firstFloor = floors[0];
             if (player.x < firstFloor.x + firstFloor.width &&
@@ -196,17 +196,17 @@ function update() {
         else if (player.y + player.height < canvas.height / 2) {
             generateFloor();
         }
-        if (player.y + player.height < canvas.height / 2) {
-            bomb.speedY = 1;
-            coin.speedY = 1;
-        }
+        // if (player.y + player.height < canvas.height / 2) {
+        //   bomb.speedY = 1;
+        //   coin.speedY = 1;
+        // }
         generateBomb();
         removeBombs();
         checkCollisionBomb();
         generateCoin();
         removeCoins();
         checkCollisionCoin();
-        console.log(player.y);
+        console.log("player.y:", player.y);
         if (player.y >= canvas.height) {
             gameOver = true;
             showGameOverPopup();
@@ -224,19 +224,28 @@ function draw() {
     ctx.translate(0, canvasOffsetY); // creating the effect of the player and other objects moving up in the game world
     // Draw player & floors & bomb & coins
     player.draw(ctx);
-    for (var _i = 0, floors_2 = floors; _i < floors_2.length; _i++) {
-        var floor = floors_2[_i];
-        floor.draw(ctx);
-    }
-    for (var _a = 0, bombs_1 = bombs; _a < bombs_1.length; _a++) {
-        var bomb_1 = bombs_1[_a];
-        bomb_1.drawBomb(ctx);
-        bomb_1.newPos();
-    }
-    for (var _b = 0, coins_1 = coins; _b < coins_1.length; _b++) {
-        var coin_1 = coins_1[_b];
-        coin_1.animation(ctx);
-        coin_1.newPos();
+    if (!gameOver) {
+        for (var _i = 0, floors_2 = floors; _i < floors_2.length; _i++) {
+            var floor = floors_2[_i];
+            floor.draw(ctx);
+            floor.newPos();
+            if (gameOver)
+                floor.speedY = 0;
+        }
+        for (var _a = 0, bombs_1 = bombs; _a < bombs_1.length; _a++) {
+            var bomb_1 = bombs_1[_a];
+            bomb_1.drawBomb(ctx);
+            bomb_1.newPos();
+            if (gameOver)
+                bomb_1.speedY = 0;
+        }
+        for (var _b = 0, coins_1 = coins; _b < coins_1.length; _b++) {
+            var coin_1 = coins_1[_b];
+            coin_1.animation(ctx);
+            coin_1.newPos();
+            if (gameOver)
+                coin_1.speedY = 0;
+        }
     }
     // Reset the canvas transformation
     ctx.setTransform(1, 0, 0, 1, 0, 0); //resets the canvas transformation, undoing the previous vertical offset applied
