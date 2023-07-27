@@ -3,8 +3,8 @@ const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 
 const player = new Player();
-const bomb = new Bomb(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
-const coin = new Coin(Math.floor(Math.random()*500), Math.floor(Math.random()*500),30,0);
+const bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+const coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 
 //const users: User[] = [];
 let bombs: Bomb[] = [];
@@ -24,7 +24,7 @@ let hasStartedMovingDown = false;
 
 const floorImageUrl = "../../images/stick.png";
 
-//generate the floors
+// Generate the floors
 function generateFloor() {
   const minGap = 100;
   const maxGap = 200;
@@ -58,7 +58,7 @@ function removeFloors() {
 function generateBomb() {
   const width = 30;
 
-  const x = Math.floor(Math.random()*(canvas.width - width)); //determine the horizontal position of the new "bomb" element
+  const x = Math.floor(Math.random() * (canvas.width - width)); //determine the horizontal position of the new "bomb" element
   const y = canvas.height - 20; // determine the vertical position of the new "bomb" element above the player's position  
 
   if (bombs.length < 5) {
@@ -142,19 +142,25 @@ document.addEventListener("keypress", onKeyPress);
 //update frames
 let updateInterval: number;
 
-function update() {
-  //This function is responsible for updating the game state, handling collisions, and generating new floors and bombs.
-  if (!gameOver) {
+let hasStartedJumping = false; // Flag to track if the player has started jumping
 
+// Update function
+function update() {
+  if (!gameOver) {
     if (isLeftKeyPressed) {
       player.x -= 2;
     } else if (isRightKeyPressed) {
       player.x += 2;
     }
+
+    if (player.y < canvas.height / 2) {
+      canvasOffsetY = canvas.height / 2 - player.y;
+    }
+
     player.update();
 
     let floorCollision = false;
-    let targetFloorId: number | null = null; // Keep track of the ID of the target floor
+    let targetFloorId = null;
 
     if (floors.length > 0) {
       const firstFloor = floors[0];
@@ -172,44 +178,36 @@ function update() {
           targetFloorId = firstFloor.id;
         }
       } else {
-        // Check collision with other floors
         for (const floor of floors) {
           if (
-            player.y + player.height > floor.y && // Check if the player's bottom edge is below the floor's top edge
-            player.y < floor.y + floor.height && // Check if the player's top edge is above the floor's bottom edge
-            player.x < floor.x + floor.width && // Check if the player's right edge is to the left of the floor's right edge
-            player.x + player.width > floor.x // Check if the player's left edge is to the right of the floor's left edge
+            player.y + player.height > floor.y &&
+            player.y < floor.y + floor.height &&
+            player.x < floor.x + floor.width &&
+            player.x + player.width > floor.x
           ) {
             floorCollision = true;
-            targetFloorId = floor.id; // Save the ID of the target floor
+            targetFloorId = floor.id;
             break;
           }
         }
       }
     }
 
-    // Apply automatic jump only if the player is not currently jumping or is falling
     if (targetFloorId !== null && (player.isJumping || player.velocityY >= 0)) {
-      // Check if the player's y position is close to the target floor's y position
-      if (
-        floors[targetFloorId].y !== undefined &&
-        Math.abs(player.y + player.height - floors[targetFloorId].y) <= 5
-      ) {
-        player.y = floors[targetFloorId].y - player.height;
+      const targetFloor = floors.find((floor) => floor.id === targetFloorId);
+      if (targetFloor && targetFloor.y !== undefined && Math.abs(player.y + player.height - targetFloor.y) <= 5) {
+        player.y = targetFloor.y - player.height;
         player.velocityY = 0;
         player.isJumping = false;
-        player.rotation = 0; // Reset rotation when landing on a floor
+        player.rotation = 0;
       } else {
-        // Gradually adjust player's y position to simulate smooth climbing
         player.y += player.velocityY;
       }
     }
 
-    // Adjust player position if falling off the floor due to rotation
     if (floorCollision && player.rotation !== 0) {
       const targetFloor = floors.find((floor) => floor.id === targetFloorId);
       if (targetFloor) {
-        // Check if the player's x position is within the bounds of the target floor
         if (
           player.x + player.width >= targetFloor.x &&
           player.x <= targetFloor.x + targetFloor.width
@@ -217,14 +215,14 @@ function update() {
           player.y = targetFloor.y - player.height;
           player.velocityY = 0;
           player.isJumping = false;
-          player.rotation = 0; // Reset rotation when colliding with a floor
+          player.rotation = 0;
         }
       }
     }
-    // Reset isJumping to false if the player is on the floor or falling
+
     if (floorCollision || player.velocityY > 0) {
       player.isJumping = false;
-      player.rotation = 0; // Reset rotation when on the floor or falling
+      player.rotation = 0;
     }
 
     removeFloors();
@@ -232,25 +230,33 @@ function update() {
     if (floors.length === 0 || floors[floors.length - 1].y > 100) {
       generateFloor();
     } else if (player.y + player.height < canvas.height / 2) {
-      // If the player is moving up and reaches a certain point, generate new floors
       generateFloor();
+    }
+
+    if (player.y + player.height < canvas.height / 2) {
+      bomb.speedY = 1;
+      coin.speedY = 1;
     }
 
     generateBomb();
     removeBombs();
-    checkCollisionBomb()
+    checkCollisionBomb();
 
     generateCoin();
     removeCoins();
-    checkCollisionCoin()
-
+    checkCollisionCoin();
+    console.log(player.y);
     if (player.y >= canvas.height) {
       gameOver = true;
       showGameOverPopup();
-      clearInterval(updateInterval); // Stop the update loop when the game is over
+      clearInterval(updateInterval);
     }
   }
 }
+
+
+// Update loop
+updateInterval = setInterval(update, 800 / 60);
 generateFloor();
 //--
 //draw frames
@@ -262,7 +268,7 @@ function draw() {
   // Draw player & floors & bomb & coins
   player.draw(ctx);
 
-   for (const floor of floors) {
+  for (const floor of floors) {
     floor.draw(ctx);
   }
 
@@ -271,7 +277,7 @@ function draw() {
     bomb.newPos();
   }
 
-  for (const coin of coins){
+  for (const coin of coins) {
     coin.animation(ctx);
     coin.newPos()
   }
@@ -319,40 +325,40 @@ function checkCollisionBomb() {
   let bombCollision = false;
   let targetBombId: number | null = null; // Keep track of the ID of the target floor
 
-    for (const bomb of bombs) {
-      if (
-        bomb.x < player.x + player.width &&
-        bomb.x + bomb.width > player.x &&
-        bomb.y + bomb.height > player.y
-      ) {
-        bombCollision = true;
-        console.log(`collosion bomb`)
-        targetBombId = bomb.idB; // Save the ID of the target bomb
-        console.log(`targetBombId:`, targetBombId)
-        bombs = bombs.filter((bomb) => (bomb.idB !== targetBombId)); // Remove the bomb that hit 
+  for (const bomb of bombs) {
+    if (
+      bomb.x < player.x + player.width &&
+      bomb.x + bomb.width > player.x &&
+      bomb.y + bomb.height > player.y
+    ) {
+      bombCollision = true;
+      console.log(`collosion bomb`)
+      targetBombId = bomb.idB; // Save the ID of the target bomb
+      console.log(`targetBombId:`, targetBombId)
+      bombs = bombs.filter((bomb) => (bomb.idB !== targetBombId)); // Remove the bomb that hit 
 
-        return bombCollision;
-      }
+      return bombCollision;
     }
   }
+}
 
-function checkCollisionCoin(){
+function checkCollisionCoin() {
   let coinCollision = false;
   let targetCoinId: number | null = null; // Keep track of the ID of the target floor
 
-    for (const coin of coins) {
-      if (
-        coin.x < player.x + player.width &&
-        coin.x + coin.width > player.x &&
-        coin.y + coin.height > player.y
-      ) {
-        coinCollision = true;
-        console.log(`collosion coin`)
-        targetCoinId = coin.idC; // Save the ID of the target coin
-        console.log(`targetCoinId:`, targetCoinId)
-        coins = coins.filter((coin) => (coin.idC !== targetCoinId)); // Remove the bomb that hit 
+  for (const coin of coins) {
+    if (
+      coin.x < player.x + player.width &&
+      coin.x + coin.width > player.x &&
+      coin.y + coin.height > player.y
+    ) {
+      coinCollision = true;
+      console.log(`collosion coin`)
+      targetCoinId = coin.idC; // Save the ID of the target coin
+      console.log(`targetCoinId:`, targetCoinId)
+      coins = coins.filter((coin) => (coin.idC !== targetCoinId)); // Remove the bomb that hit 
 
-        return coinCollision;
-      }
+      return coinCollision;
     }
+  }
 }
