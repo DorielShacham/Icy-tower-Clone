@@ -103,24 +103,22 @@ class Bomb {
   speedX: number;
   speedY: number;
 
-  constructor(x: number, y: number, width: number, idB: number) {
+  constructor(x: number, y: number , width: number, idB: number) {
     this.x = Math.floor(Math.random() * 690); //random position on x
     this.y = Math.floor(Math.random() * 600); //random position on y
-    this.width = 40;
+    this.width = 30;
     this.height = 40;
     this.idB = idB; // Assign the ID to the bomb
     this.image = document.querySelector('#bomb')
 
-    this.speedX = 0;
     this.speedY = 0;
     this.newPos = function () {
-      //this.x += this.speedX;
       this.y += this.speedY;
     }
   }
 
   drawBomb(ctx: CanvasRenderingContext2D) {
-    ctx.strokeRect(this.x, this.y, this.width, this.height)
+    //ctx.strokeRect(this.x, this.y, this.width, this.height)
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
   }
 
@@ -137,7 +135,11 @@ class Coin {
   speed: number;
   speedFrame: number;
 
-  constructor(x: number, y: number, width: number, idC: number) {
+  newPos: Function;
+  speedX: number;
+  speedY: number;
+
+  constructor(x: number , y: number , width: number , idC: number) {
     this.x = Math.floor(Math.random() * 690);
     this.y = Math.floor(Math.random() * 600);
     this.width = 30;
@@ -147,25 +149,26 @@ class Coin {
     this.frameX = 0;
     this.speedFrame = 0;
     this.speed = 5;
+
+    this.speedY = 0;
+    this.newPos = function () {
+      this.y += this.speedY;
+    }
   }
 
-  //drawCoin(ctx: CanvasRenderingContext2D) {
-    //ctx.strokeRect(this.x, this.y, this.width, this.height);
-    //this.animation.bind(this)(ctx); // Bind the function to the current instance
-  //}
-
   animation(ctx: CanvasRenderingContext2D) {
-    ctx.strokeRect(this.x, this.y, this.width, this.height);
+    //ctx.strokeRect(this.x, this.y, this.width, this.height);
     const coinWidth = 170;
     const coinHeight = 170;
     ctx.clearRect(0, 0, this.width, this.height);
     ctx.drawImage(this.image, this.frameX*coinWidth, 0*coinHeight, coinWidth, coinHeight, this.x, this.y, this.width, this.height);
-    debugger
+    
     if (this.speedFrame % this.speed === 0) {
       if (this.frameX < 6) this.frameX++;
       else this.frameX = 0;
     }
     this.speedFrame++;
-    requestAnimationFrame(() => this.animation(ctx)); // Use an arrow function to preserve the this context
   }
 }
+
+

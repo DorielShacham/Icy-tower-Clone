@@ -12,20 +12,24 @@ ScorePage === finish --> tamar
 
 # controlers
 - update score --> tamar / shiran
-- fall down (end game) - @completed --> doriel
-- hit obstical (loss/collect point)  --> tamar
-- move (up, left, right) - @completed  --> doriel
-- movment of the background -> as the figur move up in the screen the backgrund move down --> doriel
-- data-from-storage -> function that get the data we put in local storage to the page we load
-- on-load -> will help us start the loading page only with what we need
+- fall down (end game) --> doriel --> @completed
+- hit obstical (loss/collect point)  --> tamar --> finish
+- move (up, left, right) --> doriel  --> @completed
+- movment of the background -> as the figur move up in the screen the backgrund move down --> shiran
+- data-from-storage -> function that get the data we put in local storage to the page we load --> shiran
+- on-load -> will help us start the loading page only with what we need --> shiran
+- movment of the floor --> doriel
+- movment of the bomb & coin --> tamar --> finish
 
 
 # view
 - loge-in page -> the user enter his username and/or choose a figure --> shiran
-- rendergame -> take data from storage and render the game on screen --> doriel
-- renderscoreboard -> take data from storgae and render a score table --> tamar
+- rendergame -> take data from storage and render the game on screen --> doriel & tamar
+- renderscoreboard -> take data from storgae and render a score table --> tamar/shiran
 
 
 # css
-- figurs -> 2/3 options(?)
-- backgraund invarunment -> incloding obsticals -> shalves, coins & bombs
+- figurs/player -> 1 options --> doriel/shiran
+- backgraund invarunment --> shiran
+- obsticals -> coins & bombs --> tamar
+- obstical -> floor --> doriel/shran
