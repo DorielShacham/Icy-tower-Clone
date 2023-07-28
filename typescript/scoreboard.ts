@@ -22,7 +22,7 @@ function loadGames(): Game[] {
     }
 }
 // render the games
-function renderGames(games) {
+function renderGames(games:any) {
     try {
         const gamesTable = document.getElementById('games-table');
         if (!gamesTable) {
@@ -37,7 +37,7 @@ function renderGames(games) {
         gamesTable.appendChild(tableHeader);
 
         // Populate the table with game data
-        games.forEach((game) => {
+        games.forEach((game:any) => {
             const gameRow = document.createElement('tr');
             gameRow.innerHTML = `<td>${game.playerName}</td><td>${game.score}</td><td>${game.date}</td>`;
             gamesTable.appendChild(gameRow);

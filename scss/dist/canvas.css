@@ -12,6 +12,41 @@ body {
   background: linear-gradient(45deg, #00060c, #012f3f, #0f0133, #044b74);
 }
 
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+input[type=text],
+input[type=submit] {
+  width: 98%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: "Lumanosimo", cursive;
+}
+
+/* Reduce the width of the text box */
+input[type=text] {
+  width: 95%;
+  /* Adjust this value as per your preference */
+}
+
+input[type=submit] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+input[type=submit]:hover {
+  background-color: #0056b3;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -36,7 +71,7 @@ body {
   border-radius: 50px;
 }
 
-.restart-button {
+.restart-button, .back-button, .finish-button {
   background-color: #a7d1fa;
   border: none;
   color: #111010;
@@ -51,4 +86,8 @@ body {
 
 #bomb, #coin {
   display: none;
+}
+
+.score {
+  color: white;
 }

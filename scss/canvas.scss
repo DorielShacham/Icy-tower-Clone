@@ -23,7 +23,7 @@
   }
   
 
-  .restart-button {
+  .restart-button, .back-button, .finish-button {
     background-color: #a7d1fa;
     border: none;
     color: rgb(17, 16, 16);
@@ -38,4 +38,8 @@
 
   #bomb, #coin {
     display: none;
+  }
+
+  .score {
+    color: white;
   }

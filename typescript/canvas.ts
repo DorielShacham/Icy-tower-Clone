@@ -1,28 +1,28 @@
 //---------------------------------------------------------------------
 function loadGamesCanvas(): Game[] {
   try {
-      const games: Game[] = [];
-      // get the games from local storage
-      const gamesString = localStorage.getItem('games');
+    const games: Game[] = [];
+    // get the games from local storage
+    const gamesString = localStorage.getItem('games');
 
-      // Handle the case where there are no games in localStorage
-      if (!gamesString) {
-          console.error("No games found in localStorage.");
-          return [];
-      }
-      const gamesJson = JSON.parse(gamesString);
-      gamesJson.forEach((gameJson: any) => {
-          const game = new Game(gameJson.userName, gameJson.score, new Date(gameJson.date));
-          games.push(game);
-      });
-   
-      return games;
-  } catch (error) {
-      console.error("Error loading games:", error);
+    // Handle the case where there are no games in localStorage
+    if (!gamesString) {
+      console.error("No games found in localStorage.");
       return [];
+    }
+    const gamesJson = JSON.parse(gamesString);
+    gamesJson.forEach((gameJson: any) => {
+      const game = new Game(gameJson.userName, gameJson.score, new Date(gameJson.date));
+      games.push(game);
+    });
+
+    return games;
+  } catch (error) {
+    console.error("Error loading games:", error);
+    return [];
   }
 }
-const games:Game[]=loadGamesCanvas();
+const games: Game[] = loadGamesCanvas();
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
@@ -71,6 +71,7 @@ function generateFloor() {
       : Math.floor(Math.random() * (canvas.width - width));
 
   floors.push(new Floor(x, y, width, lastFloorId, floorImageUrl));
+  console.log(floors)
   lastFloorId++;
 }
 
@@ -123,22 +124,34 @@ function removeCoins() {
 let gameOver = false;
 function showGameOverPopup() {
   const popup = document.getElementById("popup")!;
+  //-------back to loggin btn----
+  const backButton = document.createElement("button");
+  backButton.classList.add("back-button");
+  backButton.textContent = "Back";
+  backButton.addEventListener("click", () => {
+    window.location.href = "index.html"; //go back to loggin page
+  });
+
+  //---restart btn-----
   const restartButton = document.createElement("button");
   restartButton.classList.add("restart-button");
   restartButton.textContent = "Restart";
   restartButton.addEventListener("click", () => {
     location.reload();
   });
-  const backButton = document.createElement("button");
-  backButton.classList.add("back-button");
-  backButton.textContent = "Back";
-  backButton.addEventListener("click", () => {
 
-    window.location.href = "index.html";
+  //-------end game btn---------
+  const finishButton = document.createElement("button");
+  finishButton.classList.add("finish-button");
+  finishButton.textContent = "End Game";
+  finishButton.addEventListener("click", () => {
+    window.location.href = "scoreboard.html"; //go to score board page
   });
+
   // popup.innerHTML = "You touched the floor! Game Over!";
   popup.appendChild(restartButton);
   popup.appendChild(backButton);
+  popup.appendChild(finishButton);
   popup.style.display = "block";
 }
 //-----------------------------------------------
@@ -181,6 +194,8 @@ let hasStartedJumping = false; // Flag to track if the player has started jumpin
 
 // Update function
 function update() {
+  renderScore()
+  
   if (!gameOver) {
     if (isLeftKeyPressed) {
       player.x -= 2;
@@ -191,117 +206,109 @@ function update() {
     if (player.y < canvas.height / 2) {
       canvasOffsetY = canvas.height / 2 - player.y;
     }
+  }
 
-    player.update();
+  player.update();
+  //----floor-player collision ---> need to be at a seperate function!
+  let floorCollision = false;
+  let targetFloorId = 0;
 
-    let floorCollision = false;
-    let targetFloorId = 0;
-
-    if (floors.length > 0) {
-      const firstFloor = floors[0];
-      if (
-        player.x < firstFloor.x + firstFloor.width &&
-        player.x + player.width > firstFloor.x &&
-        player.y + player.height > firstFloor.y
-      ) {
-        if (player.y + player.height <= firstFloor.y + 30) {
-          player.y = firstFloor.y - player.height;
-          player.velocityY = 0;
-          player.isJumping = false;
-        } else {
-          floorCollision = true;
-          targetFloorId = firstFloor.id;
-        }
+  if (floors.length > 0) {
+    const firstFloor = floors[0];
+    if (
+      player.x < firstFloor.x + firstFloor.width &&
+      player.x + player.width > firstFloor.x &&
+      player.y + player.height > firstFloor.y
+    ) {
+      if (player.y + player.height <= firstFloor.y + 30) {
+        player.y = firstFloor.y - player.height;
+        player.velocityY = 0;
+        player.isJumping = false;
       } else {
-        for (const floor of floors) {
-          if (
-            player.y + player.height > floor.y &&
-            player.y < floor.y + floor.height &&
-            player.x < floor.x + floor.width &&
-            player.x + player.width > floor.x
-          ) {
-            floorCollision = true;
-            targetFloorId = floor.id;
-            break;
-          }
+        floorCollision = true;
+        targetFloorId = firstFloor.id;
+      }
+    } else {
+      for (const floor of floors) {
+        if (
+          player.y + player.height > floor.y &&
+          player.y < floor.y + floor.height &&
+          player.x < floor.x + floor.width &&
+          player.x + player.width > floor.x
+        ) {
+          floorCollision = true;
+          targetFloorId = floor.id;
+          break;
         }
       }
     }
+  }
 
-    if (targetFloorId !== null && (player.isJumping || player.velocityY >= 0)) {
-      const targetFloor = floors.find((floor) => floor.id === targetFloorId);
-      if (targetFloor && targetFloor.y !== undefined && Math.abs(player.y + player.height - targetFloor.y) <= 5) {
+  if (targetFloorId !== null && (player.isJumping || player.velocityY >= 0)) {
+    const targetFloor = floors.find((floor) => floor.id === targetFloorId);
+    if (targetFloor && targetFloor.y !== undefined && Math.abs(player.y + player.height - targetFloor.y) <= 5) {
+      player.y = targetFloor.y - player.height;
+      player.velocityY = 0;
+      player.isJumping = false;
+      player.rotation = 0;
+    } else {
+      player.y += player.velocityY;
+    }
+  }
+
+  if (floorCollision && player.rotation !== 0) {
+    const targetFloor = floors.find((floor) => floor.id === targetFloorId);
+    if (targetFloor) {
+      if (
+        player.x + player.width >= targetFloor.x &&
+        player.x <= targetFloor.x + targetFloor.width
+      ) {
         player.y = targetFloor.y - player.height;
         player.velocityY = 0;
         player.isJumping = false;
         player.rotation = 0;
-      } else {
-        player.y += player.velocityY;
       }
     }
+  }
 
-    if (floorCollision && player.rotation !== 0) {
-      const targetFloor = floors.find((floor) => floor.id === targetFloorId);
-      if (targetFloor) {
-        if (
-          player.x + player.width >= targetFloor.x &&
-          player.x <= targetFloor.x + targetFloor.width
-        ) {
-          player.y = targetFloor.y - player.height;
-          player.velocityY = 0;
-          player.isJumping = false;
-          player.rotation = 0;
-        }
-      }
-    }
+  if (floorCollision || player.velocityY > 0) {
+    player.isJumping = false;
+    player.rotation = 0;
+  }
 
-    if (floorCollision || player.velocityY > 0) {
-      player.isJumping = false;
-      player.rotation = 0;
-    }
+  removeFloors();
 
-    removeFloors();
+  if (floors.length === 0 || floors[floors.length - 1].y > 100) {
+    generateFloor();
+  } else if (player.y + player.height < canvas.height / 2) {
+    generateFloor();
+  }
 
-    if (floors.length === 0 || floors[floors.length - 1].y > 100) {
-      generateFloor();
-    } else if (player.y + player.height < canvas.height / 2) {
-      generateFloor();
-    }
+  generateBomb();
+  removeBombs();
+  const isBomb = checkCollisionBomb();
+  if (isBomb) {
+    player.score--;
+  }
 
-    // if (player.y + player.height < canvas.height / 2) {
-    //   bomb.speedY = 1;
-    //   coin.speedY = 1;
-    // }
-
-    generateBomb();
-    removeBombs();
-    const isBomb=checkCollisionBomb();
-    if (isBomb){
-      player.score--;
-    }
-
-    generateCoin();
-    removeCoins();
-    const isCoin=checkCollisionCoin();
-    if (isCoin){
-      player.score++;
-    }
-  
-
-    if (player.y >= canvas.height) {
-      gameOver = true;
-      games.push(new Game(player.userName,player.score,new Date(player.date)))
-      // save to local
-      const arrayJSON = JSON.stringify(games);
-      localStorage.setItem('games',arrayJSON);
-      showGameOverPopup();
-      clearInterval(updateInterval);
-    }
+  generateCoin();
+  removeCoins();
+  const isCoin = checkCollisionCoin();
+  if (isCoin) {
+    player.score++;
+  }
 
 
+  if (player.y >= canvas.height) {
+    gameOver = true;
+    games.push(new Game(player.userName, player.score, new Date(player.date)))
+    // save to local the last game data
+    const arrayJSON = JSON.stringify(games);
+    localStorage.setItem('games', arrayJSON);
+    showGameOverPopup();
+    clearInterval(updateInterval);
   }
 }
-
 
 // Update loop
 updateInterval = setInterval(update, 800 / 60);
@@ -312,26 +319,25 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.translate(0, canvasOffsetY); // creating the effect of the player and other objects moving up in the game world
 
-
   // Draw player & floors & bomb & coins
   player.draw(ctx);
   if (!gameOver) {
     for (const floor of floors) {
       floor.draw(ctx);
       floor.newPos();
-      if(gameOver) floor.speedY=0;
+      if (gameOver) floor.speedY = 0;
     }
 
     for (const bomb of bombs) {
       bomb.drawBomb(ctx);
       bomb.newPos();
-      if(gameOver) bomb.speedY=0;
+      if (gameOver) bomb.speedY = 0;
     }
 
     for (const coin of coins) {
       coin.animation(ctx);
       coin.newPos()
-      if(gameOver) coin.speedY=0;
+      if (gameOver) coin.speedY = 0;
     }
   }
   // Reset the canvas transformation
@@ -349,27 +355,15 @@ updateInterval = setInterval(update, 800 / 60);
 
 //------------render score---------
 //need to be FIX!!!!
-// function renderScore() {
-//   const html = document.querySelector("#score");
-//   const users = localStorage.getItem("users");
-//   try {
-//     if (!html) throw new Error("no element");
-//     html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
-function renderTableScore() {
+function renderScore() {
+  const game: Game[] = loadGamesCanvas()
+  const html = document.querySelector("#score");
   try {
-    const scoreTable = document.querySelector("#scoreTable");
-    if (!scoreTable) throw new Error("no element");
-
-    const htmlScoreTable = `<h2> </h2>`;
+    if (!html) throw new Error("no element");
+    html.innerHTML = `<h2>${game[game.length-1].playerName} your current score is: ${game[game.length-1].score}</h2>`;
   } catch (error) {
     console.error(error);
   }
-
 }
 
 //------------------check collision-----------------------------
