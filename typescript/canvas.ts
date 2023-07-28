@@ -1,8 +1,34 @@
 //---------------------------------------------------------------------
+function loadGamesCanvas(): Game[] {
+  try {
+      const games: Game[] = [];
+      // get the games from local storage
+      const gamesString = localStorage.getItem('games');
+
+      // Handle the case where there are no games in localStorage
+      if (!gamesString) {
+          console.error("No games found in localStorage.");
+          return [];
+      }
+      const gamesJson = JSON.parse(gamesString);
+      gamesJson.forEach((gameJson: any) => {
+          const game = new Game(gameJson.userName, gameJson.score, new Date(gameJson.date));
+          games.push(game);
+      });
+   
+      return games;
+  } catch (error) {
+      console.error("Error loading games:", error);
+      return [];
+  }
+}
+const games:Game[]=loadGamesCanvas();
+
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 
-const player = new Player();
+const userName = localStorage.getItem('username');
+const player = new Player(userName!);
 const bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 const coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 
@@ -103,8 +129,16 @@ function showGameOverPopup() {
   restartButton.addEventListener("click", () => {
     location.reload();
   });
+  const backButton = document.createElement("button");
+  backButton.classList.add("back-button");
+  backButton.textContent = "Back";
+  backButton.addEventListener("click", () => {
+
+    window.location.href = "index.html";
+  });
   // popup.innerHTML = "You touched the floor! Game Over!";
   popup.appendChild(restartButton);
+  popup.appendChild(backButton);
   popup.style.display = "block";
 }
 //-----------------------------------------------
@@ -241,16 +275,25 @@ function update() {
 
     generateBomb();
     removeBombs();
-    checkCollisionBomb();
+    const isBomb=checkCollisionBomb();
+    if (isBomb){
+      player.score--;
+    }
 
     generateCoin();
     removeCoins();
-    checkCollisionCoin();
-
-    console.log(`player.y:`, player.y);
+    const isCoin=checkCollisionCoin();
+    if (isCoin){
+      player.score++;
+    }
+  
 
     if (player.y >= canvas.height) {
       gameOver = true;
+      games.push(new Game(player.userName,player.score,new Date(player.date)))
+      // save to local
+      const arrayJSON = JSON.stringify(games);
+      localStorage.setItem('games',arrayJSON);
       showGameOverPopup();
       clearInterval(updateInterval);
     }

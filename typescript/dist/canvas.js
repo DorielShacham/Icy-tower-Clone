@@ -1,7 +1,31 @@
 //---------------------------------------------------------------------
+function loadGamesCanvas() {
+    try {
+        var games_1 = [];
+        // get the games from local storage
+        var gamesString = localStorage.getItem('games');
+        // Handle the case where there are no games in localStorage
+        if (!gamesString) {
+            console.error("No games found in localStorage.");
+            return [];
+        }
+        var gamesJson = JSON.parse(gamesString);
+        gamesJson.forEach(function (gameJson) {
+            var game = new Game(gameJson.userName, gameJson.score, new Date(gameJson.date));
+            games_1.push(game);
+        });
+        return games_1;
+    }
+    catch (error) {
+        console.error("Error loading games:", error);
+        return [];
+    }
+}
+var games = loadGamesCanvas();
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-var player = new Player();
+var userName = localStorage.getItem('username');
+var player = new Player(userName);
 var bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 var coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 //const users: User[] = [];
@@ -78,8 +102,15 @@ function showGameOverPopup() {
     restartButton.addEventListener("click", function () {
         location.reload();
     });
+    var backButton = document.createElement("button");
+    backButton.classList.add("back-button");
+    backButton.textContent = "Back";
+    backButton.addEventListener("click", function () {
+        window.location.href = "index.html";
+    });
     // popup.innerHTML = "You touched the floor! Game Over!";
     popup.appendChild(restartButton);
+    popup.appendChild(backButton);
     popup.style.display = "block";
 }
 //-----------------------------------------------
@@ -203,13 +234,22 @@ function update() {
         // }
         generateBomb();
         removeBombs();
-        checkCollisionBomb();
+        var isBomb = checkCollisionBomb();
+        if (isBomb) {
+            player.score--;
+        }
         generateCoin();
         removeCoins();
-        checkCollisionCoin();
-        console.log("player.y:", player.y);
+        var isCoin = checkCollisionCoin();
+        if (isCoin) {
+            player.score++;
+        }
         if (player.y >= canvas.height) {
             gameOver = true;
+            games.push(new Game(player.userName, player.score, new Date(player.date)));
+            // save to local
+            var arrayJSON = JSON.stringify(games);
+            localStorage.setItem('games', arrayJSON);
             showGameOverPopup();
             clearInterval(updateInterval);
         }
