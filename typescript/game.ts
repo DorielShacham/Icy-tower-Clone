@@ -1,11 +1,13 @@
 // model (classes)
 
-class User {
-  constructor(public userName: string, public score: number = 0, public player: Player) {
-    //updateScore();
+class Game {
+//for score page save only relevant data
+  static counterId: number = 0;
+  gameId: number;
+  constructor(public playerName: string, public score: number ,public date: Date ){
+    this.gameId = ++Game.counterId; 
   }
 }
-
 class Player {
   x: number;
   y: number;
@@ -15,8 +17,12 @@ class Player {
   isJumping: boolean;
   image: HTMLImageElement;
   rotation: number;
+  date: Date;
+  score: number ;
 
-  constructor() {
+  constructor(public userName: string ) {
+    this.date = new Date();
+    this.score = 0;
     this.x = 600;
     this.y = canvas.height - 50; // Set the initial y position above the first floor
     this.width = 50;

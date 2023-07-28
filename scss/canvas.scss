@@ -1,4 +1,6 @@
-  // canvas scss
+@import 'mainStyle';
+ 
+ // canvas scss
 
   body {
     display: flex;
@@ -7,8 +9,6 @@
     align-items: center; /* Center the content vertically */
     height: 100vh; /* Set the body height to full viewport height */
     margin: 0; /* Remove default margin */
-    /* Dark blue to light green gradient background */
-    background: linear-gradient(45deg, #00060c, #012f3f, #0f0133, #044b74);
   }
   #canvas {
     /* Your existing canvas styles */

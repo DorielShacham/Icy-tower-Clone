@@ -1,16 +1,20 @@
 // model (classes)
-var User = /** @class */ (function () {
-    function User(userName, score, player) {
-        if (score === void 0) { score = 0; }
-        this.userName = userName;
+var Game = /** @class */ (function () {
+    function Game(playerName, score, date) {
+        this.playerName = playerName;
         this.score = score;
-        this.player = player;
-        //updateScore();
+        this.date = date;
+        this.gameId = ++Game.counterId;
     }
-    return User;
+    //for score page save only relevant data
+    Game.counterId = 0;
+    return Game;
 }());
 var Player = /** @class */ (function () {
-    function Player() {
+    function Player(userName) {
+        this.userName = userName;
+        this.date = new Date();
+        this.score = 0;
         this.x = 600;
         this.y = canvas.height - 50; // Set the initial y position above the first floor
         this.width = 50;
