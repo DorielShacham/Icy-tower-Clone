@@ -2,9 +2,9 @@ Goal:
 # Game Details - icytower clone
 
 # Pages
-Homepage === loge-in --> shiran
+Homepage === loge-in --> shiran --> @completed
 GamePage             --> doriel
-ScorePage === finish --> tamar
+ScorePage === finish --> tamar/shiran
 
 # model
 - hendelsubmit -> get the data from users and save it in local storage and move to the game
