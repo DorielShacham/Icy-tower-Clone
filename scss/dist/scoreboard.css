@@ -1,4 +1,4 @@
-/* Global Styles */
+/* Main Styles */
 html,
 body {
   height: 100%;
@@ -12,21 +12,143 @@ body {
   background: linear-gradient(45deg, #00060c, #012f3f, #0f0133, #044b74);
 }
 
+/* Main Container */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+input[type=text],
+input[type=submit] {
+  width: 98%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: "Lumanosimo", cursive;
+}
+
+/* Reduce the width of the text box */
+input[type=text] {
+  width: 95%;
+  /* Adjust this value as per your preference */
+}
+
+input[type=submit] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+input[type=submit]:hover {
+  background-color: #0056b3;
+}
+
+.restart-button, .back-button {
+  background-color: #a7d1fa;
+  border: none;
+  color: #111010;
+  padding: 20px 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+@keyframes backgroundAnimation {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-20px) scale(0.8);
+    opacity: 0.5;
+  }
+}
+.background-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  animation: backgroundAnimation 5s infinite;
+  /* Adjust the animation duration and other properties as needed */
+  z-index: -1;
+  /* Move the background behind the other content */
+}
+
+.imgAnimation img {
+  width: 250px;
+  height: 250px;
+}
+
+/* Rest of your existing styles... */
+/* Table Styles */
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 30px;
 }
 
 th, td {
-  border: 1px solid black;
-  padding: 8px;
-  text-align: left;
+  border: 2px solid #fff;
+  padding: 12px;
+  text-align: center;
+  color: #fff;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: #007bff;
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #00406b;
+}
+
+/* Hover effect for table rows */
+tr:hover {
+  background-color: #002c4d;
+}
+
+/* Center the Back button */
+#games-table {
+  text-align: center;
+}
+
+/* Style for the Back button */
+button {
+  background-color: #a7d1fa;
+  border: none;
+  color: #111010;
+  font-weight: bold;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 20px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #80b8ed;
 }

@@ -10,7 +10,7 @@ function loadGames() {
         }
         var gamesJson = JSON.parse(gamesString);
         gamesJson.forEach(function (gameJson) {
-            var game = new Game(gameJson.userName, gameJson.score, new Date(gameJson.date));
+            var game = new Game(gameJson.playerName, gameJson.score, new Date(gameJson.date));
             games_1.push(game);
         });
         return games_1;
@@ -35,8 +35,15 @@ function renderGames(games) {
         gamesTable_1.appendChild(tableHeader);
         // Populate the table with game data
         games.forEach(function (game) {
+            var shortDate = game.date.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
             var gameRow = document.createElement('tr');
-            gameRow.innerHTML = "<td>" + game.playerName + "</td><td>" + game.score + "</td><td>" + game.date + "</td>";
+            gameRow.innerHTML = "<td>" + game.playerName + "</td>\n            <td>" + game.score + "</td><td>" + shortDate + "</td>";
             gamesTable_1.appendChild(gameRow);
         });
     }

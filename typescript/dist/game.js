@@ -21,6 +21,7 @@ var Player = /** @class */ (function () {
         this.height = 50;
         this.velocityY = -10;
         this.isJumping = false;
+        this.userName = userName;
         this.rotation = 0; // Set the initial rotation angle to 0 degrees
         // Load the image for the player
         this.image = new Image();

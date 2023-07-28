@@ -2,21 +2,78 @@
 // import style.scss
 @import 'mainStyle';
 
+
+@keyframes backgroundAnimation {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+    50% { transform: translateY(-20px) scale(0.8); opacity: 0.5; }
+  }
+  .background-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    animation: backgroundAnimation 5s infinite; /* Adjust the animation duration and other properties as needed */
+    z-index: -1; /* Move the background behind the other content */
+  }
+  
+  .imgAnimation img {
+    width: 250px;
+    height: 250px;
+  }
+  /* Rest of your existing styles... */
+  
+/* Table Styles */
 table {
     width: 100%;
     border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
+    margin-top: 30px;
+  }
+  
+  th, td {
+    border: 2px solid #fff;
+    padding: 12px;
+    text-align: center;
+    color: #fff;
+  }
+  
+  th {
+    background-color: #007bff;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #00406b;
+  }
+  
+  /* Hover effect for table rows */
+  tr:hover {
+    background-color: #002c4d;
+  }
+  
+  /* Center the Back button */
+  #games-table {
+    text-align: center;
+  }
+  
+  /* Style for the Back button */
+  button {
+    background-color: #a7d1fa;
+    border: none;
+    color: #111010;
+    font-weight: bold;
+    padding: 12px 24px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 20px;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #80b8ed;
+  }
