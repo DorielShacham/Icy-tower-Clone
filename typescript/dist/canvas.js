@@ -11,7 +11,7 @@ function loadGamesCanvas() {
         }
         var gamesJson = JSON.parse(gamesString);
         gamesJson.forEach(function (gameJson) {
-            var game = new Game(gameJson.userName, gameJson.score, new Date(gameJson.date));
+            var game = new Game(gameJson.playerName, gameJson.score, new Date(gameJson.date));
             games_1.push(game);
         });
         return games_1;
@@ -246,6 +246,7 @@ function update() {
         }
         if (player.y >= canvas.height) {
             gameOver = true;
+            debugger;
             games.push(new Game(player.userName, player.score, new Date(player.date)));
             // save to local
             var arrayJSON = JSON.stringify(games);

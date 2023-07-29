@@ -11,7 +11,7 @@ function loadGames(): Game[] {
         }
         const gamesJson = JSON.parse(gamesString);
         gamesJson.forEach((gameJson: any) => {
-            const game = new Game(gameJson.userName, gameJson.score, new Date(gameJson.date));
+            const game = new Game(gameJson.playerName, gameJson.score, new Date(gameJson.date));
             games.push(game);
         });
      
@@ -38,8 +38,16 @@ function renderGames(games) {
 
         // Populate the table with game data
         games.forEach((game) => {
+            const shortDate = game.date.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
             const gameRow = document.createElement('tr');
-            gameRow.innerHTML = `<td>${game.playerName}</td><td>${game.score}</td><td>${game.date}</td>`;
+            gameRow.innerHTML = `<td>${game.playerName}</td>
+            <td>${game.score}</td><td>${shortDate}</td>`;
             gamesTable.appendChild(gameRow);
         });
 

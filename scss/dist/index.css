@@ -1,4 +1,4 @@
-/* Global Styles */
+/* Main Styles */
 html,
 body {
   height: 100%;
@@ -10,6 +10,16 @@ body {
 body {
   /* Dark blue to light green gradient background */
   background: linear-gradient(45deg, #00060c, #012f3f, #0f0133, #044b74);
+}
+
+/* Main Container */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 h1 {
@@ -47,6 +57,19 @@ input[type=submit]:hover {
   background-color: #0056b3;
 }
 
+.restart-button, .back-button {
+  background-color: #a7d1fa;
+  border: none;
+  color: #111010;
+  padding: 20px 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
 #cursorShadow {
   position: fixed;
   opacity: 20%;
@@ -63,14 +86,6 @@ input[type=submit]:hover {
   /* Set a high z-index to ensure the shadow is above other elements */
   transform: translate(-50%, -50%);
   /* Move the shadow to be centered around the cursor */
-}
-
-/* Main Container */
-.main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
 }
 
 /* Login Form */

@@ -1,4 +1,4 @@
-/* Global Styles */
+/* Main Styles */
 html,
 body {
   height: 100%;
@@ -10,6 +10,16 @@ body {
 body {
   /* Dark blue to light green gradient background */
   background: linear-gradient(45deg, #00060c, #012f3f, #0f0133, #044b74);
+}
+
+/* Main Container */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 h1 {
@@ -45,4 +55,17 @@ input[type=submit] {
 
 input[type=submit]:hover {
   background-color: #0056b3;
+}
+
+.restart-button, .back-button {
+  background-color: #a7d1fa;
+  border: none;
+  color: #111010;
+  padding: 20px 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
 }
