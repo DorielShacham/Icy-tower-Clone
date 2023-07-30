@@ -37,7 +37,7 @@ function renderGames(games) {
         gamesTable.appendChild(tableHeader);
 
         // Populate the table with game data
-        games.forEach((game) => {
+        games.reverse().forEach((game) => {
             const shortDate = game.date.toLocaleDateString(undefined, {
                 year: 'numeric',
                 month: '2-digit',

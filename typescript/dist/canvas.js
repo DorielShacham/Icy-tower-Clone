@@ -162,6 +162,7 @@ var hasStartedJumping = false; // Flag to track if the player has started jumpin
 // Update function
 function update() {
     if (!gameOver) {
+        renderScore();
         if (isLeftKeyPressed) {
             player.x -= 2;
         }
@@ -312,11 +313,11 @@ updateInterval = setInterval(update, 800 / 60);
 //need to be FIX!!!!
 function renderScore() {
     var html = document.querySelector("#score");
-    var users = localStorage.getItem("users");
+    //const  = localStorage.getItem("");
     try {
         if (!html)
             throw new Error("no element");
-        html.innerHTML = "<h2>" + user.userName + " your current score is: " + users.score + "</h2>";
+        html.innerHTML = "<h2>" + player.userName + " your current score is: " + player.score + "</h2>";
     }
     catch (error) {
         console.error(error);
