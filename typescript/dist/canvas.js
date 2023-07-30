@@ -239,10 +239,11 @@ function update() {
         else if (player.y + player.height < canvas.height / 2) {
             generateFloor();
         }
-        // if (player.y + player.height < canvas.height / 2) {
-        //   bomb.speedY = 1;
-        //   coin.speedY = 1;
-        // }
+        if (player.y + player.height < canvas.height / 2) {
+            bomb.speedY = 1;
+            coin.speedY = 1;
+            floors.forEach(function (floor) { return floor.speedY = 1; });
+        }
         generateBomb();
         removeBombs();
         var isBomb = checkCollisionBomb();
