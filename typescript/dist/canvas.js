@@ -43,13 +43,13 @@ var hasStartedMovingDown = false;
 var floorImageUrl = "../../images/stick.png";
 // Generate the floors
 function generateFloor() {
-    var minGap = 100;
-    var maxGap = 200;
+    //const minGap = 100;
+    //const maxGap = 200;
     var minWidth = 250;
     var maxWidth = 200;
     var lastFloor = floors[floors.length - 1];
     var y = lastFloor ? lastFloor.y - 100 : canvas.height - 20 - canvasOffsetY; // Apply the vertical offset to the first floor
-    var gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
+    //const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
     var width = floors.length === 0
         ? canvas.width
         : Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
@@ -164,13 +164,18 @@ function update() {
     if (!gameOver) {
         renderScore();
         if (isLeftKeyPressed) {
-            player.x -= 2;
+            player.x -= 5;
         }
         else if (isRightKeyPressed) {
-            player.x += 2;
+            player.x += 5;
         }
         if (player.y < canvas.height / 2) {
             canvasOffsetY = canvas.height / 2 - player.y;
+        }
+        if (hasStartedJumping) {
+            floors.forEach(function (floor) { return floor.speedY = 4; });
+            bombs.forEach(function (bomb) { return bomb.speedY = 4; });
+            coins.forEach(function (coin) { return coin.speedY = 4; });
         }
         player.update();
         var floorCollision = false;
@@ -238,11 +243,6 @@ function update() {
         }
         else if (player.y + player.height < canvas.height / 2) {
             generateFloor();
-        }
-        if (player.y + player.height < canvas.height / 2) {
-            bomb.speedY = 1;
-            coin.speedY = 1;
-            floors.forEach(function (floor) { return floor.speedY = 1; });
         }
         generateBomb();
         removeBombs();

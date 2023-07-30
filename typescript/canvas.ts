@@ -1,28 +1,28 @@
 //---------------------------------------------------------------------
 function loadGamesCanvas(): Game[] {
   try {
-      const games: Game[] = [];
-      // get the games from local storage
-      const gamesString = localStorage.getItem('games');
+    const games: Game[] = [];
+    // get the games from local storage
+    const gamesString = localStorage.getItem('games');
 
-      // Handle the case where there are no games in localStorage
-      if (!gamesString) {
-          console.error("No games found in localStorage.");
-          return [];
-      }
-      const gamesJson = JSON.parse(gamesString);
-      gamesJson.forEach((gameJson: any) => {
-          const game = new Game(gameJson.playerName, gameJson.score, new Date(gameJson.date));
-          games.push(game);
-      });
-   
-      return games;
-  } catch (error) {
-      console.error("Error loading games:", error);
+    // Handle the case where there are no games in localStorage
+    if (!gamesString) {
+      console.error("No games found in localStorage.");
       return [];
+    }
+    const gamesJson = JSON.parse(gamesString);
+    gamesJson.forEach((gameJson: any) => {
+      const game = new Game(gameJson.playerName, gameJson.score, new Date(gameJson.date));
+      games.push(game);
+    });
+
+    return games;
+  } catch (error) {
+    console.error("Error loading games:", error);
+    return [];
   }
 }
-const games:Game[]=loadGamesCanvas();
+const games: Game[] = loadGamesCanvas();
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
@@ -52,19 +52,20 @@ const floorImageUrl = "../../images/stick.png";
 
 // Generate the floors
 function generateFloor() {
-  const minGap = 100;
-  const maxGap = 200;
+  //const minGap = 100;
+  //const maxGap = 200;
   const minWidth = 250;
   const maxWidth = 200;
 
   const lastFloor = floors[floors.length - 1];
   const y = lastFloor ? lastFloor.y - 100 : canvas.height - 20 - canvasOffsetY; // Apply the vertical offset to the first floor
 
-  const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
+  //const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
   const width =
     floors.length === 0
       ? canvas.width
       : Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
+
   const x =
     floors.length === 0
       ? 0
@@ -145,7 +146,7 @@ function showGameOverPopup() {
     window.location.href = "index.html";
   });
   // popup.innerHTML = "You touched the floor! Game Over!";
-  popup.appendChild(backButton);  
+  popup.appendChild(backButton);
   popup.appendChild(restartButton);
   popup.appendChild(scoreButton);
   popup.style.display = "block";
@@ -193,13 +194,19 @@ function update() {
   if (!gameOver) {
     renderScore()
     if (isLeftKeyPressed) {
-      player.x -= 2;
+      player.x -= 5;
     } else if (isRightKeyPressed) {
-      player.x += 2;
+      player.x += 5;
     }
 
     if (player.y < canvas.height / 2) {
       canvasOffsetY = canvas.height / 2 - player.y;
+    }
+
+    if(hasStartedJumping){
+      floors.forEach(floor => floor.speedY = 4)
+      bombs.forEach(bomb => bomb.speedY = 4)
+      coins.forEach(coin => coin.speedY = 4)
     }
 
     player.update();
@@ -278,31 +285,27 @@ function update() {
       generateFloor();
     }
 
-    if (player.y + player.height < canvas.height / 2) {
-     bomb.speedY = 1;
-     coin.speedY = 1;
-     floors.forEach(floor => floor.speedY=1)
-    }
+
 
     generateBomb();
     removeBombs();
-    const isBomb=checkCollisionBomb();
-    if (isBomb){
+    const isBomb = checkCollisionBomb();
+    if (isBomb) {
       player.score--;
     }
 
     generateCoin();
     removeCoins();
-    const isCoin=checkCollisionCoin();
-    if (isCoin){
+    const isCoin = checkCollisionCoin();
+    if (isCoin) {
       player.score++;
     }
     if (player.y >= canvas.height) {
       gameOver = true;
-      games.push(new Game(player.userName,player.score,new Date(player.date)))
+      games.push(new Game(player.userName, player.score, new Date(player.date)))
       // save to local
       const arrayJSON = JSON.stringify(games);
-      localStorage.setItem('games',arrayJSON);
+      localStorage.setItem('games', arrayJSON);
       showGameOverPopup();
       clearInterval(updateInterval);
     }
@@ -325,19 +328,19 @@ function draw() {
     for (const floor of floors) {
       floor.draw(ctx);
       floor.newPos();
-      if(gameOver) floor.speedY=0;
+      if (gameOver) floor.speedY = 0;
     }
 
     for (const bomb of bombs) {
       bomb.drawBomb(ctx);
       bomb.newPos();
-      if(gameOver) bomb.speedY=0;
+      if (gameOver) bomb.speedY = 0;
     }
 
     for (const coin of coins) {
       coin.animation(ctx);
       coin.newPos()
-      if(gameOver) coin.speedY=0;
+      if (gameOver) coin.speedY = 0;
     }
   }
   // Reset the canvas transformation

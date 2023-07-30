@@ -40,6 +40,7 @@ class Player {
   jump() {
     if (!this.isJumping) {
       this.velocityY = -15;
+      console.log(`jump.velocityY:`, this.velocityY)
       this.isJumping = true;
     }
   }
@@ -52,7 +53,7 @@ class Player {
     // Apply rotation only when the player is jumping
     if (this.isJumping) {
       // Increase the rotation angle while jumping
-      this.rotation += 25; // Adjust the value as needed for the rotation speed
+      this.rotation += 55; // Adjust the value as needed for the rotation speed
       if (this.rotation >= 360) {
         // Wrap the rotation angle around 360 degrees
         this.rotation = 0;
