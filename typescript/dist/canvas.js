@@ -96,12 +96,21 @@ function removeCoins() {
 var gameOver = false;
 function showGameOverPopup() {
     var popup = document.getElementById("popup");
+    //--
+    var scoreButton = document.createElement("button");
+    scoreButton.classList.add("score-button");
+    scoreButton.textContent = "score board";
+    scoreButton.addEventListener("click", function () {
+        window.location.href = "scoreboard.html";
+    });
+    //---
     var restartButton = document.createElement("button");
     restartButton.classList.add("restart-button");
     restartButton.textContent = "Restart";
     restartButton.addEventListener("click", function () {
         location.reload();
     });
+    //--
     var backButton = document.createElement("button");
     backButton.classList.add("back-button");
     backButton.textContent = "Back";
@@ -109,8 +118,9 @@ function showGameOverPopup() {
         window.location.href = "index.html";
     });
     // popup.innerHTML = "You touched the floor! Game Over!";
-    popup.appendChild(restartButton);
     popup.appendChild(backButton);
+    popup.appendChild(restartButton);
+    popup.appendChild(scoreButton);
     popup.style.display = "block";
 }
 //-----------------------------------------------
@@ -246,7 +256,6 @@ function update() {
         }
         if (player.y >= canvas.height) {
             gameOver = true;
-            debugger;
             games.push(new Game(player.userName, player.score, new Date(player.date)));
             // save to local
             var arrayJSON = JSON.stringify(games);
