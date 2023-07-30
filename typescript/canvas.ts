@@ -353,27 +353,15 @@ updateInterval = setInterval(update, 800 / 60);
 
 //------------render score---------
 //need to be FIX!!!!
-// function renderScore() {
-//   const html = document.querySelector("#score");
-//   const users = localStorage.getItem("users");
-//   try {
-//     if (!html) throw new Error("no element");
-//     html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
-function renderTableScore() {
+function renderScore() {
+  const html = document.querySelector("#score");
+  const users = localStorage.getItem("users");
   try {
-    const scoreTable = document.querySelector("#scoreTable");
-    if (!scoreTable) throw new Error("no element");
-
-    const htmlScoreTable = `<h2> </h2>`;
+    if (!html) throw new Error("no element");
+    html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
   } catch (error) {
     console.error(error);
   }
-
 }
 
 //------------------check collision-----------------------------
