@@ -34,7 +34,7 @@ function renderGames(games) {
         tableHeader.innerHTML = '<th>Player Name</th><th>Score</th><th>Date</th>';
         gamesTable_1.appendChild(tableHeader);
         // Populate the table with game data
-        games.forEach(function (game) {
+        games.reverse().forEach(function (game) {
             var shortDate = game.date.toLocaleDateString(undefined, {
                 year: 'numeric',
                 month: '2-digit',

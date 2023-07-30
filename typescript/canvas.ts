@@ -191,6 +191,7 @@ let hasStartedJumping = false; // Flag to track if the player has started jumpin
 // Update function
 function update() {
   if (!gameOver) {
+    renderScore()
     if (isLeftKeyPressed) {
       player.x -= 2;
     } else if (isRightKeyPressed) {
@@ -353,27 +354,15 @@ updateInterval = setInterval(update, 800 / 60);
 
 //------------render score---------
 //need to be FIX!!!!
-// function renderScore() {
-//   const html = document.querySelector("#score");
-//   const users = localStorage.getItem("users");
-//   try {
-//     if (!html) throw new Error("no element");
-//     html.innerHTML = `<h2>${user.userName} your current score is: ${users.score}</h2>`;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
-function renderTableScore() {
+function renderScore() {
+  const html = document.querySelector("#score");
+  //const  = localStorage.getItem("");
   try {
-    const scoreTable = document.querySelector("#scoreTable");
-    if (!scoreTable) throw new Error("no element");
-
-    const htmlScoreTable = `<h2> </h2>`;
+    if (!html) throw new Error("no element");
+    html.innerHTML = `<h2>${player.userName} your current score is: ${player.score}</h2>`;
   } catch (error) {
     console.error(error);
   }
-
 }
 
 //------------------check collision-----------------------------
