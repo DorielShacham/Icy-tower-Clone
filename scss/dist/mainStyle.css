@@ -57,7 +57,7 @@ input[type=submit]:hover {
   background-color: #0056b3;
 }
 
-.restart-button, .back-button {
+.restart-button, .back-button, .score-button {
   background-color: #a7d1fa;
   border: none;
   color: #111010;
