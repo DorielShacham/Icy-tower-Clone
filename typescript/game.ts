@@ -93,7 +93,7 @@ class Floor {
     this.image = new Image();
     this.image.src = imageUrl;
 
-    this.speedY = 1;
+    this.speedY = 0;
     this.newPos = function () {
       this.y += this.speedY;
     }
@@ -124,7 +124,7 @@ class Bomb {
     this.idB = idB; // Assign the ID to the bomb
     this.image = document.querySelector('#bomb')
 
-    this.speedY = 1;
+    this.speedY = 0;
     this.newPos = function () {
       this.y += this.speedY;
     }
@@ -162,7 +162,7 @@ class Coin {
     this.speedFrame = 0;
     this.speed = 5;
 
-    this.speedY = 1;
+    this.speedY = 0;
     this.newPos = function () {
       this.y += this.speedY;
     }

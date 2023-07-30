@@ -278,10 +278,11 @@ function update() {
       generateFloor();
     }
 
-    // if (player.y + player.height < canvas.height / 2) {
-    //   bomb.speedY = 1;
-    //   coin.speedY = 1;
-    // }
+    if (player.y + player.height < canvas.height / 2) {
+     bomb.speedY = 1;
+     coin.speedY = 1;
+     floors.forEach(floor => floor.speedY=1)
+    }
 
     generateBomb();
     removeBombs();

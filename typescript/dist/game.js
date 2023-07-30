@@ -68,7 +68,7 @@ var Floor = /** @class */ (function () {
         // Load the image for the floor
         this.image = new Image();
         this.image.src = imageUrl;
-        this.speedY = 1;
+        this.speedY = 0;
         this.newPos = function () {
             this.y += this.speedY;
         };
@@ -87,7 +87,7 @@ var Bomb = /** @class */ (function () {
         this.height = 40;
         this.idB = idB; // Assign the ID to the bomb
         this.image = document.querySelector('#bomb');
-        this.speedY = 1;
+        this.speedY = 0;
         this.newPos = function () {
             this.y += this.speedY;
         };
@@ -109,7 +109,7 @@ var Coin = /** @class */ (function () {
         this.frameX = 0;
         this.speedFrame = 0;
         this.speed = 5;
-        this.speedY = 1;
+        this.speedY = 0;
         this.newPos = function () {
             this.y += this.speedY;
         };
