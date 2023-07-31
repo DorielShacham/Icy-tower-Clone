@@ -19,11 +19,9 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(24, 13, 46, 0.1);
-  max-width: 350px;
+  //max-width: 350px;
   width: 90%;
 }
-
-
 
 /* Scoreboard Button */
 #scoreboardBtn {
@@ -40,12 +38,13 @@
     border-radius: 180px;
     cursor: pointer;
   }
-/* Responsive Styles */
 
+
+/*--------------------- Responsive Styles -------------- */
 /* For small devices (up to 768px) */
 @media screen and (max-width: 768px) {
   #LogInForm {
-    width: 100%;
+    max-width:350px;
   }
 }
 
@@ -55,10 +54,10 @@
     max-width: 600px;
   }
 }
-
 /* For large devices (1024px and above) */
 @media screen and (min-width: 1024px) {
   #LogInForm {
     max-width: 800px;
   }
+  
 }
