@@ -174,9 +174,9 @@ function update() {
         }
         //the game will start move only after the player first jump
         if (hasStartedJumping) {
-            floors.forEach(function (floor) { return floor.speedY = 4; });
-            bombs.forEach(function (bomb) { return bomb.speedY = 4; });
-            coins.forEach(function (coin) { return coin.speedY = 4; });
+            floors.forEach(function (floor) { return floor.speedY = 2; });
+            bombs.forEach(function (bomb) { return bomb.speedY = 2; });
+            coins.forEach(function (coin) { return coin.speedY = 2; });
         }
         player.update();
         var floorCollision = false;

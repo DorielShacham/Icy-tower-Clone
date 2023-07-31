@@ -205,9 +205,9 @@ function update() {
 
     //the game will start move only after the player first jump
     if(hasStartedJumping){
-      floors.forEach(floor => floor.speedY = 4)
-      bombs.forEach(bomb => bomb.speedY = 4)
-      coins.forEach(coin => coin.speedY = 4)
+      floors.forEach(floor => floor.speedY = 2)
+      bombs.forEach(bomb => bomb.speedY = 2)
+      coins.forEach(coin => coin.speedY = 2)
     }
 
     player.update();

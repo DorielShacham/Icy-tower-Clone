@@ -21,6 +21,7 @@ var Player = /** @class */ (function () {
         this.height = 50;
         this.velocityY = -10;
         this.isJumping = false;
+        this.jumpPower = -15; // The initial jump power (negative value to move upward)
         this.userName = userName;
         this.rotation = 0; // Set the initial rotation angle to 0 degrees
         // Load the image for the player
@@ -29,15 +30,13 @@ var Player = /** @class */ (function () {
     }
     Player.prototype.jump = function () {
         if (!this.isJumping) {
-            this.velocityY = -15;
-            console.log("jump.velocityY:", this.velocityY);
+            this.velocityY = this.jumpPower;
             this.isJumping = true;
         }
     };
     Player.prototype.update = function () {
         this.y += this.velocityY;
         this.velocityY += 0.5;
-        // Apply rotation only when the player is jumping or falling
         // Apply rotation only when the player is jumping
         if (this.isJumping) {
             // Increase the rotation angle while jumping
