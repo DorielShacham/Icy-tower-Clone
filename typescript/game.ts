@@ -15,6 +15,7 @@ class Player {
   height: number;
   velocityY: number;
   isJumping: boolean;
+  jumpPower: number;
   image: HTMLImageElement;
   rotation: number;
   date: Date;
@@ -29,6 +30,7 @@ class Player {
     this.height = 50;
     this.velocityY = -10;
     this.isJumping = false;
+    this.jumpPower = -15; // The initial jump power (negative value to move upward)
     this.userName = userName;
     this.rotation = 0; // Set the initial rotation angle to 0 degrees
 
@@ -39,8 +41,7 @@ class Player {
 
   jump() {
     if (!this.isJumping) {
-      this.velocityY = -15;
-      console.log(`jump.velocityY:`, this.velocityY)
+      this.velocityY = this.jumpPower;
       this.isJumping = true;
     }
   }
@@ -48,8 +49,6 @@ class Player {
   update() {
     this.y += this.velocityY;
     this.velocityY += 0.5;
-
-    // Apply rotation only when the player is jumping or falling
     // Apply rotation only when the player is jumping
     if (this.isJumping) {
       // Increase the rotation angle while jumping
@@ -62,7 +61,6 @@ class Player {
       // If the player is not jumping, set the rotation angle to 0
       this.rotation = 0;
     }
-
   }
 
   draw(ctx: CanvasRenderingContext2D) {
