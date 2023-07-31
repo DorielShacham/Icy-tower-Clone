@@ -172,6 +172,7 @@ function update() {
         if (player.y < canvas.height / 2) {
             canvasOffsetY = canvas.height / 2 - player.y;
         }
+        //the game will start move only after the player first jump
         if (hasStartedJumping) {
             floors.forEach(function (floor) { return floor.speedY = 4; });
             bombs.forEach(function (bomb) { return bomb.speedY = 4; });
