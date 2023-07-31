@@ -57,7 +57,7 @@ input[type=submit]:hover {
   background-color: #0056b3;
 }
 
-.restart-button, .back-button {
+.restart-button, .back-button, .score-button {
   background-color: #a7d1fa;
   border: none;
   color: #111010;
@@ -94,7 +94,6 @@ input[type=submit]:hover {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(24, 13, 46, 0.1);
-  max-width: 350px;
   width: 90%;
 }
 
@@ -117,11 +116,11 @@ input[type=submit]:hover {
   cursor: pointer;
 }
 
-/* Responsive Styles */
+/*--------------------- Responsive Styles -------------- */
 /* For small devices (up to 768px) */
 @media screen and (max-width: 768px) {
   #LogInForm {
-    width: 100%;
+    max-width: 350px;
   }
 }
 /* For medium devices (768px to 1024px) */
