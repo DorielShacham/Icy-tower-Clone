@@ -1,3 +1,5 @@
+
+
 //---------------------------------------------------------------------
 function loadGamesCanvas(): Game[] {
   try {
@@ -29,8 +31,8 @@ const ctx = canvas.getContext("2d")!;
 
 const userName = localStorage.getItem('username');
 const player = new Player(userName!);
-const bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
-const coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+// const bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+// const coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 
 //const users: User[] = [];
 let bombs: Bomb[] = [];
