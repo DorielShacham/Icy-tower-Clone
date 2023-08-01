@@ -14,12 +14,14 @@ class Player {
   width: number;
   height: number;
   velocityY: number;
+  velocityX: number; // Add velocityX for horizontal movement
   isJumping: boolean;
   jumpPower: number;
   image: HTMLImageElement;
   rotation: number;
   date: Date;
   score: number ;
+ 
 
   constructor(public userName: string ) {
     this.date = new Date();
@@ -28,12 +30,13 @@ class Player {
     this.y = canvas.height - 50; // Set the initial y position above the first floor
     this.width = 50;
     this.height = 50;
-    this.velocityY = -10;
+    this.velocityY = -15;
+    this.velocityX = 0; // Add velocityX for horizontal movement
     this.isJumping = false;
-    this.jumpPower = -15; // The initial jump power (negative value to move upward)
+    this.jumpPower = -10; // The initial jump power (negative value to move upward)
     this.userName = userName;
     this.rotation = 0; // Set the initial rotation angle to 0 degrees
-
+    
     // Load the image for the player
     this.image = new Image();
     this.image.src = '../../images/player/player.png'; // Replace with the actual image path
@@ -50,9 +53,8 @@ class Player {
     this.y += this.velocityY;
     this.velocityY += 0.5;
     // Apply rotation only when the player is jumping
-    if (this.isJumping) {
-      // Increase the rotation angle while jumping
-      this.rotation += 55; // Adjust the value as needed for the rotation speed
+    if (this.isJumping) { // Increase the rotation angle while jumping
+      this.rotation += 5; // Adjust the value as needed for the rotation speed
       if (this.rotation >= 360) {
         // Wrap the rotation angle around 360 degrees
         this.rotation = 0;

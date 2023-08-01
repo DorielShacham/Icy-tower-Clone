@@ -169,23 +169,23 @@ function update() {
         else if (isRightKeyPressed) {
             player.x += 5;
         }
-        if (player.y < canvas.height / 2) {
-            canvasOffsetY = canvas.height / 2 - player.y;
+        if (player.y < canvas.height / 100) {
+            canvasOffsetY = canvas.height / 100;
         }
-        //the game will start move only after the player first jump
         if (hasStartedJumping) {
-            floors.forEach(function (floor) { return floor.speedY = 2; });
-            bombs.forEach(function (bomb) { return bomb.speedY = 2; });
-            coins.forEach(function (coin) { return coin.speedY = 2; });
+            floors.forEach(function (floor) { return (floor.speedY = 2); });
+            bombs.forEach(function (bomb) { return (bomb.speedY = 2); });
+            coins.forEach(function (coin) { return (coin.speedY = 2); });
+            if (player.y < canvas.height / 2 && player.isJumping) {
+                canvasOffsetY += 1;
+            }
         }
         player.update();
         var floorCollision = false;
         var targetFloorId_1 = 0;
         if (floors.length > 0) {
             var firstFloor = floors[0];
-            if (player.x < firstFloor.x + firstFloor.width &&
-                player.x + player.width > firstFloor.x &&
-                player.y + player.height > firstFloor.y) {
+            if (player.x < firstFloor.x + firstFloor.width && player.x + player.width > firstFloor.x && player.y + player.height > firstFloor.y) {
                 if (player.y + player.height <= firstFloor.y + 30) {
                     player.y = firstFloor.y - player.height;
                     player.velocityY = 0;
@@ -217,6 +217,7 @@ function update() {
                 player.velocityY = 0;
                 player.isJumping = false;
                 player.rotation = 0;
+                canvasOffsetY = 0; // Reset the vertical offset when the player lands on the ground.
             }
             else {
                 player.y += player.velocityY;
@@ -231,6 +232,7 @@ function update() {
                     player.velocityY = 0;
                     player.isJumping = false;
                     player.rotation = 0;
+                    canvasOffsetY = 0; // Reset the vertical offset when the player lands on the ground.
                 }
             }
         }
@@ -257,6 +259,18 @@ function update() {
         if (isCoin) {
             player.score++;
         }
+        // for (const floor of floors) {
+        //   if (
+        //     player.y + player.height + player.velocityY >= floor.y &&
+        //     player.y + player.velocityY < floor.y + floor.height &&
+        //     player.x < floor.x + floor.width &&
+        //     player.x + player.width > floor.x
+        //   ) {
+        //     floorCollision = true;
+        //     targetFloorId = floor.id;
+        //     break;
+        //   }
+        // }
         if (player.y >= canvas.height) {
             gameOver = true;
             games.push(new Game(player.userName, player.score, new Date(player.date)));
@@ -271,11 +285,22 @@ function update() {
 // Update loop
 updateInterval = setInterval(update, 800 / 60);
 generateFloor();
+// const backgroundImages = [
+//   "../../images/Ladder.jpg", // Default background image
+//   "../../images/cloud-sky.jpg", // Background image when player reaches a certain position
+//   // Add more background image URLs as needed
+// ];
 //--
 //draw frames
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.translate(0, canvasOffsetY); // creating the effect of the player and other objects moving up in the game world
+    var backgroundImageIndex = 0; // Default background image index
+    // if (player.y <= canvas.height / 2) {
+    //   backgroundImageIndex = 1; // Set background image to the second URL when the player reaches a certain position
+    // }
+    // // Set the canvas background image
+    // canvas.style.backgroundImage = `url('${backgroundImages[backgroundImageIndex]}')`;
     // Draw player & floors & bomb & coins
     player.draw(ctx);
     if (!gameOver) {
