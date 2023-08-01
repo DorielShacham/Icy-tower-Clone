@@ -26,8 +26,8 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var userName = localStorage.getItem('username');
 var player = new Player(userName);
-var bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
-var coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+// const bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
+// const coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 //const users: User[] = [];
 var bombs = [];
 var coins = [];
@@ -287,18 +287,18 @@ function draw() {
                 floor.speedY = 0;
         }
         for (var _a = 0, bombs_1 = bombs; _a < bombs_1.length; _a++) {
-            var bomb_1 = bombs_1[_a];
-            bomb_1.drawBomb(ctx);
-            bomb_1.newPos();
+            var bomb = bombs_1[_a];
+            bomb.drawBomb(ctx);
+            bomb.newPos();
             if (gameOver)
-                bomb_1.speedY = 0;
+                bomb.speedY = 0;
         }
         for (var _b = 0, coins_1 = coins; _b < coins_1.length; _b++) {
-            var coin_1 = coins_1[_b];
-            coin_1.animation(ctx);
-            coin_1.newPos();
+            var coin = coins_1[_b];
+            coin.animation(ctx);
+            coin.newPos();
             if (gameOver)
-                coin_1.speedY = 0;
+                coin.speedY = 0;
         }
     }
     // Reset the canvas transformation
@@ -330,13 +330,13 @@ function checkCollisionBomb() {
     var bombCollision = false;
     var targetBombId = null; // Keep track of the ID of the target floor
     for (var _i = 0, bombs_2 = bombs; _i < bombs_2.length; _i++) {
-        var bomb_2 = bombs_2[_i];
-        if (bomb_2.x < player.x + player.width &&
-            bomb_2.x + bomb_2.width > player.x &&
-            bomb_2.y + bomb_2.height > player.y) {
+        var bomb = bombs_2[_i];
+        if (bomb.x < player.x + player.width &&
+            bomb.x + bomb.width > player.x &&
+            bomb.y + bomb.height > player.y) {
             bombCollision = true;
             console.log("collosion bomb");
-            targetBombId = bomb_2.idB; // Save the ID of the target bomb
+            targetBombId = bomb.idB; // Save the ID of the target bomb
             console.log("targetBombId:", targetBombId);
             bombs = bombs.filter(function (bomb) { return (bomb.idB !== targetBombId); }); // Remove the bomb that hit 
             return bombCollision;
@@ -347,13 +347,13 @@ function checkCollisionCoin() {
     var coinCollision = false;
     var targetCoinId = null; // Keep track of the ID of the target floor
     for (var _i = 0, coins_2 = coins; _i < coins_2.length; _i++) {
-        var coin_2 = coins_2[_i];
-        if (coin_2.x < player.x + player.width &&
-            coin_2.x + coin_2.width > player.x &&
-            coin_2.y + coin_2.height > player.y) {
+        var coin = coins_2[_i];
+        if (coin.x < player.x + player.width &&
+            coin.x + coin.width > player.x &&
+            coin.y + coin.height > player.y) {
             coinCollision = true;
             console.log("collosion coin");
-            targetCoinId = coin_2.idC; // Save the ID of the target coin
+            targetCoinId = coin.idC; // Save the ID of the target coin
             console.log("targetCoinId:", targetCoinId);
             coins = coins.filter(function (coin) { return (coin.idC !== targetCoinId); }); // Remove the bomb that hit 
             return coinCollision;

@@ -116,8 +116,8 @@ class Bomb {
   speedY: number;
 
   constructor(x: number, y: number , width: number, idB: number) {
-    this.x = Math.floor(Math.random() * 690); //random position on x
-    this.y = Math.floor(Math.random() * 600); //random position on y
+    this.x = Math.floor(Math.random() * canvas.width-10); //random position on x
+    this.y = Math.floor(Math.random() * canvas.width-100); //random position on y
     this.width = 30;
     this.height = 40;
     this.idB = idB; // Assign the ID to the bomb
@@ -151,8 +151,8 @@ class Coin {
   speedY: number;
 
   constructor(x: number , y: number , width: number , idC: number) {
-    this.x = Math.floor(Math.random() * 690);
-    this.y = Math.floor(Math.random() * 600);
+    this.x = Math.floor(Math.random() * canvas.width-10);
+    this.y = Math.floor(Math.random() * canvas.width-100);
     this.width = 30;
     this.height = 30;
     this.idC = idC;   // Assign the ID to the coin 
