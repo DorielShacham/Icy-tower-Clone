@@ -194,22 +194,26 @@ let hasStartedJumping = false; // Flag to track if the player has started jumpin
 // Update function
 function update() {
   if (!gameOver) {
-    renderScore()
+    renderScore();
+
     if (isLeftKeyPressed) {
       player.x -= 5;
     } else if (isRightKeyPressed) {
       player.x += 5;
     }
 
-    if (player.y < canvas.height / 2) {
-      canvasOffsetY = canvas.height / 2 - player.y;
+    if (player.y < canvas.height /100) {
+      canvasOffsetY = canvas.height / 100;
     }
 
-    //the game will start move only after the player first jump
-    if(hasStartedJumping){
-      floors.forEach(floor => floor.speedY = 2)
-      bombs.forEach(bomb => bomb.speedY = 2)
-      coins.forEach(coin => coin.speedY = 2)
+    if (hasStartedJumping) {
+      floors.forEach((floor) => (floor.speedY = 2));
+      bombs.forEach((bomb) => (bomb.speedY = 2));
+      coins.forEach((coin) => (coin.speedY = 2));
+
+      if (player.y < canvas.height / 2 && player.isJumping) {
+        canvasOffsetY += 1;
+      }
     }
 
     player.update();
@@ -219,11 +223,7 @@ function update() {
 
     if (floors.length > 0) {
       const firstFloor = floors[0];
-      if (
-        player.x < firstFloor.x + firstFloor.width &&
-        player.x + player.width > firstFloor.x &&
-        player.y + player.height > firstFloor.y
-      ) {
+      if ( player.x < firstFloor.x + firstFloor.width && player.x + player.width > firstFloor.x && player.y + player.height > firstFloor.y) {
         if (player.y + player.height <= firstFloor.y + 30) {
           player.y = firstFloor.y - player.height;
           player.velocityY = 0;
@@ -255,6 +255,7 @@ function update() {
         player.velocityY = 0;
         player.isJumping = false;
         player.rotation = 0;
+        canvasOffsetY = 0; // Reset the vertical offset when the player lands on the ground.
       } else {
         player.y += player.velocityY;
       }
@@ -271,6 +272,7 @@ function update() {
           player.velocityY = 0;
           player.isJumping = false;
           player.rotation = 0;
+          canvasOffsetY = 0; // Reset the vertical offset when the player lands on the ground.
         }
       }
     }
@@ -288,8 +290,6 @@ function update() {
       generateFloor();
     }
 
-
-
     generateBomb();
     removeBombs();
     const isBomb = checkCollisionBomb();
@@ -303,9 +303,21 @@ function update() {
     if (isCoin) {
       player.score++;
     }
+    // for (const floor of floors) {
+    //   if (
+    //     player.y + player.height + player.velocityY >= floor.y &&
+    //     player.y + player.velocityY < floor.y + floor.height &&
+    //     player.x < floor.x + floor.width &&
+    //     player.x + player.width > floor.x
+    //   ) {
+    //     floorCollision = true;
+    //     targetFloorId = floor.id;
+    //     break;
+    //   }
+    // }
     if (player.y >= canvas.height) {
       gameOver = true;
-      games.push(new Game(player.userName, player.score, new Date(player.date)))
+      games.push(new Game(player.userName, player.score, new Date(player.date)));
       // save to local
       const arrayJSON = JSON.stringify(games);
       localStorage.setItem('games', arrayJSON);
@@ -318,11 +330,26 @@ function update() {
 // Update loop
 updateInterval = setInterval(update, 800 / 60);
 generateFloor();
+
+// const backgroundImages = [
+//   "../../images/Ladder.jpg", // Default background image
+//   "../../images/cloud-sky.jpg", // Background image when player reaches a certain position
+//   // Add more background image URLs as needed
+// ];
+
+
 //--
 //draw frames
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.translate(0, canvasOffsetY); // creating the effect of the player and other objects moving up in the game world
+  let backgroundImageIndex = 0; // Default background image index
+  // if (player.y <= canvas.height / 2) {
+  //   backgroundImageIndex = 1; // Set background image to the second URL when the player reaches a certain position
+  // }
+
+  // // Set the canvas background image
+  // canvas.style.backgroundImage = `url('${backgroundImages[backgroundImageIndex]}')`;
 
 
   // Draw player & floors & bomb & coins
