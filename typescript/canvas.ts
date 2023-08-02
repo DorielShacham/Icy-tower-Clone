@@ -174,10 +174,18 @@ function onKeyUp(event: KeyboardEvent) {
 }
 //--
 //jump
+let isFirstJump=true;
 function onKeyPress(event: KeyboardEvent) {
   if (event.key === " ") {
-    player.jump();
-    hasStartedJumping = true; // Start the game when the player presses the jump key
+    if (isFirstJump){
+      player.jump();
+      isFirstJump=false}
+    else{
+      player.jump();
+      hasStartedJumping = true;
+    }
+   
+    // Start the game when the player presses the jump key
   }
 }
 //--
@@ -191,10 +199,27 @@ let updateInterval: number;
 
 let hasStartedJumping = false; // Flag to track if the player has started jumping
 
+const backgroundImages = [
+  "../../images/Ladder.jpg", // Default background image
+  "../../images/cloud-sky.jpg"
+  // Background image when player reaches a certain position
+  // Add more background image URLs as needed
+]; 
+let currentBackgroundIndex = 0;
+
 // Update function
 function update() {
+  // setInterval(() => {
+  //   currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
+  //   canvas.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`;
+  // }, 5000);
   if (!gameOver) {
-    renderScore();
+    renderScore() ;
+  
+    if(player.y < 100)
+    {
+      canvas.style.backgroundImage = `url('${backgroundImages[1]}')`;
+    }
 
     if (isLeftKeyPressed) {
       player.x -= 5;
@@ -202,7 +227,7 @@ function update() {
       player.x += 5;
     }
 
-    if (player.y < canvas.height /100) {
+    if (player.y < canvas.height / 100) {
       canvasOffsetY = canvas.height / 100;
     }
 
@@ -218,39 +243,27 @@ function update() {
 
     player.update();
 
+    
     let floorCollision = false;
-    let targetFloorId = 0;
+    let targetFloorId :number|null = null; // Keep track of the ID of the target floor
 
-    if (floors.length > 0) {
-      const firstFloor = floors[0];
-      if ( player.x < firstFloor.x + firstFloor.width && player.x + player.width > firstFloor.x && player.y + player.height > firstFloor.y) {
-        if (player.y + player.height <= firstFloor.y + 30) {
-          player.y = firstFloor.y - player.height;
-          player.velocityY = 0;
-          player.isJumping = false;
-        } else {
-          floorCollision = true;
-          targetFloorId = firstFloor.id;
-        }
-      } else {
-        for (const floor of floors) {
-          if (
-            player.y + player.height > floor.y &&
-            player.y < floor.y + floor.height &&
-            player.x < floor.x + floor.width &&
-            player.x + player.width > floor.x
-          ) {
-            floorCollision = true;
-            targetFloorId = floor.id;
-            break;
-          }
-        }
+    // Check for collisions with floors
+    for (const floor of floors) {
+      if (
+        player.x + player.width > floor.x &&
+        player.x < floor.x + floor.width &&
+        player.y + player.velocityY + player.height >= floor.y &&
+        player.y + player.velocityY < floor.y + floor.height
+      ) {
+        floorCollision = true;
+        targetFloorId = floor.id;
+        break;
       }
     }
 
     if (targetFloorId !== null && (player.isJumping || player.velocityY >= 0)) {
       const targetFloor = floors.find((floor) => floor.id === targetFloorId);
-      if (targetFloor && targetFloor.y !== undefined && Math.abs(player.y + player.height - targetFloor.y) <= 5) {
+      if (targetFloor && Math.abs(player.y + player.velocityY + player.height - targetFloor.y) <= 5) {
         player.y = targetFloor.y - player.height;
         player.velocityY = 0;
         player.isJumping = false;
@@ -303,18 +316,7 @@ function update() {
     if (isCoin) {
       player.score++;
     }
-    // for (const floor of floors) {
-    //   if (
-    //     player.y + player.height + player.velocityY >= floor.y &&
-    //     player.y + player.velocityY < floor.y + floor.height &&
-    //     player.x < floor.x + floor.width &&
-    //     player.x + player.width > floor.x
-    //   ) {
-    //     floorCollision = true;
-    //     targetFloorId = floor.id;
-    //     break;
-    //   }
-    // }
+
     if (player.y >= canvas.height) {
       gameOver = true;
       games.push(new Game(player.userName, player.score, new Date(player.date)));
@@ -326,34 +328,24 @@ function update() {
     }
   }
 }
+  
 
 // Update loop
 updateInterval = setInterval(update, 800 / 60);
 generateFloor();
 
-// const backgroundImages = [
-//   "../../images/Ladder.jpg", // Default background image
-//   "../../images/cloud-sky.jpg", // Background image when player reaches a certain position
-//   // Add more background image URLs as needed
-// ];
+
 
 
 //--
 //draw frames
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.translate(0, canvasOffsetY); // creating the effect of the player and other objects moving up in the game world
-  let backgroundImageIndex = 0; // Default background image index
-  // if (player.y <= canvas.height / 2) {
-  //   backgroundImageIndex = 1; // Set background image to the second URL when the player reaches a certain position
-  // }
+  ctx.translate(0, canvasOffsetY);
 
-  // // Set the canvas background image
-  // canvas.style.backgroundImage = `url('${backgroundImages[backgroundImageIndex]}')`;
-
-
-  // Draw player & floors & bomb & coins
+  // Draw player & floors & bombs & coins
   player.draw(ctx);
+
   if (!gameOver) {
     for (const floor of floors) {
       floor.draw(ctx);
@@ -369,15 +361,17 @@ function draw() {
 
     for (const coin of coins) {
       coin.animation(ctx);
-      coin.newPos()
+      coin.newPos();
       if (gameOver) coin.speedY = 0;
     }
   }
+
   // Reset the canvas transformation
   ctx.setTransform(1, 0, 0, 1, 0, 0); //resets the canvas transformation, undoing the previous vertical offset applied
 
   requestAnimationFrame(draw); //creates a loop that keeps redrawing the game elements
 }
+
 //--
 
 generateFloor();
