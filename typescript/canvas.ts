@@ -247,8 +247,6 @@ function update() {
     let floorCollision = false;
     let targetFloorId :number|null = null; // Keep track of the ID of the target floor
 
-    if (floors.length > 0) {
-      const firstFloor = floors[0];
     // Check for collisions with floors
     for (const floor of floors) {
       if (
