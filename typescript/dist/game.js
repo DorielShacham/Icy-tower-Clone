@@ -19,10 +19,10 @@ var Player = /** @class */ (function () {
         this.y = canvas.height - 50; // Set the initial y position above the first floor
         this.width = 50;
         this.height = 50;
-        this.velocityY = -15;
+        this.velocityY = -10;
         this.velocityX = 0; // Add velocityX for horizontal movement
         this.isJumping = false;
-        this.jumpPower = -10; // The initial jump power (negative value to move upward)
+        this.jumpPower = -15; // The initial jump power (negative value to move upward)
         this.userName = userName;
         this.rotation = 0; // Set the initial rotation angle to 0 degrees
         // Load the image for the player
