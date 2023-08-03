@@ -15,7 +15,7 @@ var Player = /** @class */ (function () {
         this.userName = userName;
         this.date = new Date();
         this.score = 0;
-        this.x = 600;
+        this.x = canvas.width - 70; //set the initial x position alweys in the canvas
         this.y = canvas.height - 50; // Set the initial y position above the first floor
         this.width = 50;
         this.height = 50;
@@ -121,7 +121,7 @@ var Coin = /** @class */ (function () {
         ctx.clearRect(0, 0, this.width, this.height);
         ctx.drawImage(this.image, this.frameX * coinWidth, 0 * coinHeight, coinWidth, coinHeight, this.x, this.y, this.width, this.height);
         if (this.speedFrame % this.speed === 0) {
-            if (this.frameX < 6)
+            if (this.frameX < 9)
                 this.frameX++;
             else
                 this.frameX = 0;
