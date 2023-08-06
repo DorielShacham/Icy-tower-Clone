@@ -169,21 +169,25 @@ var updateInterval;
 var hasStartedJumping = false; // Flag to track if the player has started jumping
 var backgroundImages = [
     "../../images/Ladder.jpg",
-    "../../images/cloud-sky.jpg"
+    "../../images/cloud-sky.jpg",
+    "../../images/space.jpg"
     // Background image when player reaches a certain position
     // Add more background image URLs as needed
 ];
 var currentBackgroundIndex = 0;
 // Update function
 function update() {
-    // setInterval(() => {
-    //   currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
-    //   canvas.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`;
-    // }, 5000);
     if (!gameOver) {
         renderScore();
-        if (player.y < 100) {
-            canvas.style.backgroundImage = "url('" + backgroundImages[1] + "')";
+        if (player.score >= 10 && currentBackgroundIndex === 0) {
+            // Change the background image when player's score reaches 100 and the current background is the default one
+            currentBackgroundIndex = 1;
+            canvas.style.backgroundImage = "url('" + backgroundImages[currentBackgroundIndex] + "')";
+        }
+        else if (player.score >= 20 && currentBackgroundIndex === 1) {
+            // Change the background image when player's score reaches 200 and the current background is the second one
+            currentBackgroundIndex = 2;
+            canvas.style.backgroundImage = "url('" + backgroundImages[currentBackgroundIndex] + "')";
         }
         if (isLeftKeyPressed) {
             player.x -= 5;

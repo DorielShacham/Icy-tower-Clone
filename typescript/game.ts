@@ -28,8 +28,8 @@ class Player {
     this.score = 0;
     this.x = canvas.width-70; //set the initial x position alweys in the canvas
     this.y = canvas.height - 50; // Set the initial y position above the first floor
-    this.width = 50;
-    this.height = 50;
+    this.width = 90;
+    this.height = 90;
     this.velocityY =  -10;
     this.velocityX = 0; // Add velocityX for horizontal movement
     this.isJumping = false;
@@ -53,7 +53,8 @@ class Player {
     this.y += this.velocityY;
     this.velocityY += 0.5;
     // Apply rotation only when the player is jumping
-    if (this.isJumping) { // Increase the rotation angle while jumping
+    if (this.isJumping) {
+      // Increase the rotation angle while jumping
       this.rotation += 5; // Adjust the value as needed for the rotation speed
       if (this.rotation >= 360) {
         // Wrap the rotation angle around 360 degrees
@@ -66,9 +67,11 @@ class Player {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = "blue";
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-    ctx.strokeRect(this.x, this.y, this.width, this.height)
+    ctx.save(); // Save the current canvas state
+    ctx.translate(this.x + this.width / 2, this.y + this.height / 2); // Translate to the center of the player
+    ctx.rotate((this.rotation * Math.PI) / 180); // Apply the rotation transformation
+    ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height); // Draw the image at the center
+    ctx.restore(); // Restore the canvas state to avoid affecting other elements
   }
 }
 
