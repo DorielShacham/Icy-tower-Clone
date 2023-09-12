@@ -26,8 +26,6 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var userName = localStorage.getItem('username');
 var player = new Player(userName);
-// const bomb = new Bomb(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
-// const coin = new Coin(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500), 30, 0);
 //const users: User[] = [];
 var bombs = [];
 var coins = [];
@@ -49,7 +47,6 @@ function generateFloor() {
     var maxWidth = 200;
     var lastFloor = floors[floors.length - 1];
     var y = lastFloor ? lastFloor.y - 100 : canvas.height - 20 - canvasOffsetY; // Apply the vertical offset to the first floor
-    //const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
     var width = floors.length === 0
         ? canvas.width
         : Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
