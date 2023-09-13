@@ -11,7 +11,7 @@ function hendleLogIn(ev) {
             // save username in local storage
             localStorage.setItem('username', username);
             // redirect to chat page
-            window.location.href = 'canvas.html';
+            window.location.href = '/main/canvas.html';
         }
     }
     catch (error) {
@@ -20,7 +20,7 @@ function hendleLogIn(ev) {
 }
 //move to scoreboard.html  --> need to be at the controlers files (canvas.ts)
 function showScoreboard() {
-    window.location.href = 'scoreboard.html';
+    window.location.href = '/main/scoreboard.html';
 }
 //mouse shadow at login page
 var cursorShadow = document.getElementById("cursorShadow");
