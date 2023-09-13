@@ -52,7 +52,7 @@ function renderGames(games) {
     }
 }
 function backHome() {
-    window.location.href = "index.html";
+    window.location.href = "/index.html";
 }
 var ScorPagegames = loadGames();
 console.log(ScorPagegames);
