@@ -112,7 +112,7 @@ function showGameOverPopup() {
     backButton.classList.add("back-button");
     backButton.textContent = "Back";
     backButton.addEventListener("click", function () {
-        window.location.href = "index.html";
+        window.location.href = "/index.html";
     });
     // popup.innerHTML = "You touched the floor! Game Over!";
     popup.appendChild(backButton);
