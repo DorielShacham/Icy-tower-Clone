@@ -57,7 +57,7 @@ function renderGames(games) {
 
 }
 function backHome() {
-    window.location.href = "index.html";
+    window.location.href = "/index.html";
 }   
 const ScorPagegames: Game[] = loadGames();
 console.log(ScorPagegames);
